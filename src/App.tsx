@@ -8,6 +8,7 @@ import { Education } from "@/sections/Education";
 import { About } from "@/sections/About";
 import { GitHub } from "@/sections/GitHub";
 import { Contact } from "@/sections/Contact";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <GitHub />
           <Contact />
         </Layout>
+        <Analytics />
       </TooltipProvider>
     </ThemeProvider>
   );
