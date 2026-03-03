@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 import { useThemeToggle } from "@/hooks/useTheme";
+import { Star, GitFork, ExternalLink } from "lucide-react";
 
 interface LastCommit {
     sha: string;
     repo: string;
     message: string;
+}
+
+interface Repo {
+    id: number;
+    name: string;
+    html_url: string;
+    description: string | null;
+    stargazers_count: number;
+    forks_count: number;
+    language: string | null;
 }
 
 function useLastCommit(username: string) {
@@ -31,6 +42,25 @@ function useLastCommit(username: string) {
     return commit;
 }
 
+function useTopRepos(username: string, count = 6) {
+    const [repos, setRepos] = useState<Repo[]>([]);
+
+    useEffect(() => {
+        fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=pushed`)
+            .then((r) => r.json())
+            .then((data: Repo[]) => {
+                if (!Array.isArray(data)) return;
+                const sorted = data
+                    .filter((r) => !r.name.toLowerCase().includes(username.toLowerCase()) || data.length <= count)
+                    .sort((a, b) => b.stargazers_count - a.stargazers_count);
+                setRepos(sorted.slice(0, count));
+            })
+            .catch(() => null);
+    }, [username, count]);
+
+    return repos;
+}
+
 interface GitHubContributionsProps {
     username: string;
 }
@@ -38,10 +68,12 @@ interface GitHubContributionsProps {
 export function GitHubContributions({ username }: GitHubContributionsProps) {
     const { isDark } = useThemeToggle();
     const lastCommit = useLastCommit(username);
+    const topRepos = useTopRepos(username);
+
     return (
         <div className="space-y-3 w-full">
             {/* Contributions calendar */}
-            <div className="w-full overflow-x-auto">
+            <div className="w-full overflow-hidden">
                 <GitHubCalendar
                     username={username}
                     colorScheme={isDark ? "dark" : "light"}
@@ -71,13 +103,55 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
             {lastCommit && (
                 <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/60">
                     <span className="font-mono bg-muted/60 px-2 py-0.5 rounded text-[10px] tracking-wider">
-                        → {lastCommit.sha}
+                        → {lastCommit.sha}
                     </span>
                     <span className="truncate" title={lastCommit.message}>
                         {lastCommit.repo} — {lastCommit.message}
                     </span>
                 </div>
             )}
+
+            {/* Top repos */}
+            {topRepos.length > 0 && (
+                <div className="pt-2">
+                    <p className="text-[11px] text-muted-foreground/60 uppercase tracking-widest mb-2">top repos</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {topRepos.map((repo) => (
+                            <a
+                                key={repo.id}
+                                href={repo.html_url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="group border border-border/30 rounded-md px-3 py-2 hover:border-border/70 transition-colors"
+                            >
+                                <div className="flex items-center justify-between gap-2 mb-0.5">
+                                    <span className="text-xs font-medium text-foreground group-hover:text-accent-pink transition-colors truncate">
+                                        {repo.name} <span className="text-muted-foreground">-&gt;</span>
+                                    </span>
+                                    <ExternalLink className="h-2.5 w-2.5 text-muted-foreground/40 shrink-0" />
+                                </div>
+                                {repo.description && (
+                                    <p className="text-[11px] text-muted-foreground/70 line-clamp-1 mb-1">
+                                        {repo.description}
+                                    </p>
+                                )}
+                                <div className="flex items-center gap-3 text-[10px] text-muted-foreground/50">
+                                    {repo.language && <span>{repo.language}</span>}
+                                    <span className="flex items-center gap-0.5">
+                                        <Star className="h-2.5 w-2.5" />
+                                        {repo.stargazers_count}
+                                    </span>
+                                    <span className="flex items-center gap-0.5">
+                                        <GitFork className="h-2.5 w-2.5" />
+                                        {repo.forks_count}
+                                    </span>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
+

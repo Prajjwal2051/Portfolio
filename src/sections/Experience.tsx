@@ -31,9 +31,29 @@ export function Experience() {
             {exp.location && (
               <p className="text-xs text-muted-foreground/60 mb-1">{exp.location}</p>
             )}
-            <p className="text-sm text-muted-foreground leading-relaxed mb-2">
+            <p className="text-xs text-muted-foreground leading-relaxed mb-2">
               {exp.description}
             </p>
+            {exp.highlights && exp.highlights.length > 0 && (
+              <ul className="mb-2 space-y-0.5">
+                {exp.highlights.map((h, i) => (
+                  <li key={i} className="flex gap-2 text-xs text-muted-foreground">
+                    <span className="shrink-0 mt-0.5">•</span>
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {exp.link && (
+              <a
+                href={exp.link}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors mb-2"
+              >
+                view project <span>-&gt;</span>
+              </a>
+            )}
             <div className="flex flex-wrap gap-1">
               {exp.tags.map((tag) => (
                 <TagBadge key={tag} tag={tag} />
