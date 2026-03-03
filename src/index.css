@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 38 100% 98%;
+    --foreground: 0 0% 10%;
+
+    --card: 38 80% 99%;
+    --card-foreground: 0 0% 10%;
+
+    --popover: 38 80% 99%;
+    --popover-foreground: 0 0% 10%;
+
+    --primary: 0 0% 10%;
+    --primary-foreground: 35 33% 93%;
+
+    --secondary: 38 30% 94%;
+    --secondary-foreground: 0 0% 10%;
+
+    --muted: 38 25% 92%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 38 30% 94%;
+    --accent-foreground: 0 0% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 38 20% 88%;
+    --input: 38 20% 88%;
+    --ring: 0 0% 10%;
+
+    --radius: 0.5rem;
+
+    --accent-pink: #e8a0b0;
+    --accent-yellow: #d4a843;
+    --accent-blue: #7fb5c5;
+  }
+
+  .dark {
+    --background: 210 3% 14%;
+    --foreground: 35 20% 90%;
+
+    --card: 210 3% 17%;
+    --card-foreground: 35 20% 90%;
+
+    --popover: 210 3% 17%;
+    --popover-foreground: 35 20% 90%;
+
+    --primary: 35 20% 90%;
+    --primary-foreground: 210 3% 14%;
+
+    --secondary: 210 3% 19%;
+    --secondary-foreground: 35 20% 90%;
+
+    --muted: 210 3% 21%;
+    --muted-foreground: 35 10% 60%;
+
+    --accent: 210 3% 19%;
+    --accent-foreground: 35 20% 90%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 210 3% 23%;
+    --input: 210 3% 23%;
+    --ring: 35 20% 80%;
+
+    --accent-pink: #d4738a;
+    --accent-yellow: #c9963a;
+    --accent-blue: #5a9aad;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-mono antialiased;
+    font-feature-settings:
+      "liga" 1,
+      "calt" 1;
+    font-variant-ligatures: contextual;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
+  }
+
+  /* Selection color */
+  ::selection {
+    background: var(--accent-pink);
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer utilities {
+  .text-accent-pink {
+    color: var(--accent-pink);
+  }
+  .text-accent-yellow {
+    color: var(--accent-yellow);
+  }
+  .text-accent-blue {
+    color: var(--accent-blue);
+  }
+}
