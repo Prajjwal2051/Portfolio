@@ -5,6 +5,7 @@ import { useActiveSection } from "@/hooks/useActiveSection";
 import { Separator } from "@/components/ui/separator";
 import { Github, Twitter, Linkedin, Hash, BookOpen, MessageSquare } from "lucide-react";
 import { VisitorCounter } from "@/components/shared/VisitorCounter";
+import { SpotifyWidget } from "@/components/shared/SpotifyWidget";
 import type { SectionId } from "@/types";
 
 const socials = [
@@ -22,6 +23,7 @@ const sectionIds: SectionId[] = [
   "experience",
   "education",
   "about",
+  "blog",
   "contact",
 ];
 
@@ -135,6 +137,8 @@ export function Sidebar() {
             </a>
           ))}
         </div>
+        <Separator className="opacity-30" />
+        <SpotifyWidget />
         <Separator className="opacity-30" />
         <VisitorCounter />
         <div className="text-xs text-muted-foreground/60 space-y-0.5">

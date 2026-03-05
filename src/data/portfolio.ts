@@ -21,6 +21,7 @@ export const portfolioData: PortfolioData = {
     { label: "experience", href: "#experience" },
     { label: "education", href: "#education" },
     { label: "about", href: "#about" },
+    { label: "blog", href: "#blog" },
     { label: "contact", href: "#contact" },
   ],
 
