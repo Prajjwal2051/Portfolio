@@ -80,11 +80,15 @@
   }
 
   body {
-    @apply bg-background text-foreground font-mono antialiased;
+    @apply bg-background text-foreground antialiased;
+    font-family:
+      "JetBrainsMono Nerd Font", "JetBrains Mono", "UbuntuMono Nerd Font",
+      "Ubuntu Mono", "Cascadia Code", monospace;
     font-feature-settings:
       "liga" 1,
       "calt" 1;
     font-variant-ligatures: contextual;
+    cursor: none;
   }
 
   html {

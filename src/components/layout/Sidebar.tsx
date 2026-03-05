@@ -28,64 +28,83 @@ export function Sidebar() {
   const { activeSection, scrollToSection } = useActiveSection(sectionIds);
 
   return (
-    <aside className="flex flex-col justify-between sticky top-0 h-screen w-[200px] xl:w-[220px] shrink-0 p-5 xl:p-6 z-40 overflow-y-auto">
+    <aside className="flex flex-col sticky top-0 h-screen w-[200px] xl:w-[220px] shrink-0 p-5 xl:p-6 z-40 overflow-y-auto">
       {/* Top: Identity */}
-      <div>
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        {/* Large initials */}
+        <button
+          onClick={() => scrollToSection("hero")}
+          className="block text-left"
+          aria-label="Go to top"
         >
-          <button
-            onClick={() => scrollToSection("hero")}
-            className="block text-left"
-            aria-label="Go to top"
-          >
-            <h1 className="text-5xl xl:text-6xl font-bold tracking-tighter leading-none select-none">
-              {portfolioData.initials.split("").join(".")}
-            </h1>
-          </button>
-          <div className="mt-3 space-y-0.5">
-            <p className="text-xs font-bold">{portfolioData.name}</p>
-            <p className="text-xs text-muted-foreground lowercase">
-              {portfolioData.role}
-            </p>
-          </div>
-        </motion.div>
+          <h1 className="text-5xl xl:text-6xl font-bold tracking-tighter leading-none select-none">
+            {portfolioData.initials.split("").join(".")}
+          </h1>
+        </button>
 
-        {/* Navigation */}
-        <nav className="mt-6" aria-label="Main navigation">
-          <ul className="space-y-0.5">
-            {portfolioData.navItems.map((item, index) => {
-              const sectionId = item.href.replace("#", "") as SectionId;
-              const isActive = activeSection === sectionId;
-              return (
-                <motion.li
-                  key={item.label}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: 0.2 + index * 0.08 }}
+        {/* Name + Role */}
+        <div className="mt-3 space-y-0.5">
+          <p className="text-sm font-bold tracking-tight">{portfolioData.name}</p>
+          <p className="text-xs text-muted-foreground lowercase tracking-wide">
+            {portfolioData.role}
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Middle: Navigation */}
+      <nav className="flex-1 flex flex-col justify-center" aria-label="Main navigation">
+        <ul className="space-y-2">
+          {portfolioData.navItems.map((item, index) => {
+            const sectionId = item.href.replace("#", "") as SectionId;
+            const isActive = activeSection === sectionId;
+            return (
+              <motion.li
+                key={item.label}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: 0.15 + index * 0.08, ease: "easeOut" }}
+              >
+                <button
+                  onClick={() => scrollToSection(sectionId)}
+                  className={cn(
+                    "flex items-center gap-2 py-1.5 text-sm font-bold transition-all duration-200 w-full text-left group",
+                    isActive
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                  aria-current={isActive ? "true" : undefined}
                 >
-                  <button
-                    onClick={() => scrollToSection(sectionId)}
-                    className={cn(
-                      "flex items-center gap-2 py-0.5 text-xs transition-colors duration-150 w-full text-left group",
-                      isActive
-                        ? "text-foreground"
-                        : "text-muted-foreground hover:text-foreground",
-                    )}
-                    aria-current={isActive ? "true" : undefined}
+                  <motion.span
+                    animate={{ scale: isActive ? 1.3 : 1, opacity: isActive ? 1 : 0.5 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-sm"
                   >
-                    <span className="text-xs">{isActive ? "•" : "◦"}</span>
-                    <span>{item.label}</span>
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-xs ml-0.5">-&gt;</span>
-                  </button>
-                </motion.li>
-              );
-            })}
-          </ul>
-        </nav>
-      </div>
+                    {isActive ? "•" : "◦"}
+                  </motion.span>
+                  <motion.span
+                    animate={{ x: isActive ? 2 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {item.label}
+                  </motion.span>
+                  <motion.span
+                    animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -4 }}
+                    whileHover={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-xs"
+                  >
+                    →
+                  </motion.span>
+                </button>
+              </motion.li>
+            );
+          })}
+        </ul>
+      </nav>
 
       {/* Bottom: Footer */}
       <motion.div
@@ -98,7 +117,7 @@ export function Sidebar() {
           href={`mailto:${portfolioData.email}`}
           className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
         >
-          stay in the loop <span className="text-xs">-&gt;</span>
+          stay in the loop <span className="text-xs">→</span>
         </a>
         {/* Social icons */}
         <div className="flex items-center gap-3 flex-wrap">

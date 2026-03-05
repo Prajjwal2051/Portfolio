@@ -8,14 +8,17 @@ interface ProjectCardProps {
   index: number;
 }
 
-export function ProjectCard({ project, index }: ProjectCardProps) {
+const item = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
+
+export function ProjectCard({ project }: ProjectCardProps) {
   return (
     <motion.div
-      className="py-3 border-b border-border/30 last:border-0"
-      initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
+      className="py-3 border-b border-border/30 last:border-0 group/card"
+      variants={item}
+      whileHover={{ x: 4, transition: { duration: 0.2 } }}
     >
       <div className="flex items-baseline gap-2 mb-0.5">
         {(() => {
