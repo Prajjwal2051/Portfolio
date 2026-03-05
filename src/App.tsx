@@ -1,6 +1,5 @@
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AnimatePresence, motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Hero } from "@/sections/Hero";
 import { Projects } from "@/sections/Projects";
