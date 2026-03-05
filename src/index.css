@@ -3,74 +3,78 @@
 @tailwind utilities;
 
 @layer base {
+  /* ── Ghibli Light: Totoro Meadow Day ── */
   :root {
-    --background: 38 100% 98%;
-    --foreground: 0 0% 10%;
+    --background: 90 38% 96%;
+    --foreground: 150 38% 12%;
 
-    --card: 38 80% 99%;
-    --card-foreground: 0 0% 10%;
+    --card: 90 30% 98%;
+    --card-foreground: 150 38% 12%;
 
-    --popover: 38 80% 99%;
-    --popover-foreground: 0 0% 10%;
+    --popover: 90 30% 98%;
+    --popover-foreground: 150 38% 12%;
 
-    --primary: 0 0% 10%;
-    --primary-foreground: 35 33% 93%;
+    --primary: 150 38% 12%;
+    --primary-foreground: 90 38% 96%;
 
-    --secondary: 38 30% 94%;
-    --secondary-foreground: 0 0% 10%;
+    --secondary: 90 22% 92%;
+    --secondary-foreground: 150 38% 12%;
 
-    --muted: 38 25% 92%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 90 18% 89%;
+    --muted-foreground: 150 18% 38%;
 
-    --accent: 38 30% 94%;
-    --accent-foreground: 0 0% 10%;
+    --accent: 90 22% 92%;
+    --accent-foreground: 150 38% 12%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 10 70% 55%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 38 20% 88%;
-    --input: 38 20% 88%;
-    --ring: 0 0% 10%;
+    --border: 90 16% 83%;
+    --input: 90 16% 83%;
+    --ring: 150 38% 22%;
 
-    --radius: 0.5rem;
+    --radius: 0.6rem;
 
-    --accent-pink: #e8a0b0;
-    --accent-yellow: #d4a843;
-    --accent-blue: #7fb5c5;
+    /* Ponyo coral · Howl's gold · Nausicaa sky */
+    --accent-pink: #e8907a;
+    --accent-yellow: #c8a540;
+    --accent-blue: #5aa0c8;
   }
 
+  /* ── Ghibli Dark: Mononoke Forest Night ── */
   .dark {
-    --background: 210 3% 14%;
-    --foreground: 35 20% 90%;
+    --background: 150 24% 10%;
+    --foreground: 90 28% 88%;
 
-    --card: 210 3% 17%;
-    --card-foreground: 35 20% 90%;
+    --card: 150 22% 13%;
+    --card-foreground: 90 28% 88%;
 
-    --popover: 210 3% 17%;
-    --popover-foreground: 35 20% 90%;
+    --popover: 150 22% 13%;
+    --popover-foreground: 90 28% 88%;
 
-    --primary: 35 20% 90%;
-    --primary-foreground: 210 3% 14%;
+    --primary: 90 28% 88%;
+    --primary-foreground: 150 24% 10%;
 
-    --secondary: 210 3% 19%;
-    --secondary-foreground: 35 20% 90%;
+    --secondary: 150 20% 16%;
+    --secondary-foreground: 90 28% 88%;
 
-    --muted: 210 3% 21%;
-    --muted-foreground: 35 10% 60%;
+    --muted: 150 18% 18%;
+    --muted-foreground: 90 12% 52%;
 
-    --accent: 210 3% 19%;
-    --accent-foreground: 35 20% 90%;
+    --accent: 150 20% 16%;
+    --accent-foreground: 90 28% 88%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 10 55% 38%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 210 3% 23%;
-    --input: 210 3% 23%;
-    --ring: 35 20% 80%;
+    --border: 150 18% 20%;
+    --input: 150 18% 20%;
+    --ring: 90 22% 70%;
 
-    --accent-pink: #d4738a;
-    --accent-yellow: #c9963a;
-    --accent-blue: #5a9aad;
+    /* Spirited Away ember · amber night · deep sky */
+    --accent-pink: #c25e48;
+    --accent-yellow: #a87e2e;
+    --accent-blue: #4888a8;
   }
 }
 
@@ -89,6 +93,21 @@
       "calt" 1;
     font-variant-ligatures: contextual;
     cursor: none;
+    /* Ghibli animated meadow gradient */
+    background-image: radial-gradient(
+      ellipse 80% 60% at 50% -10%,
+      hsl(90 50% 92% / 0.55) 0%,
+      transparent 70%
+    );
+    background-attachment: fixed;
+  }
+
+  .dark body {
+    background-image: radial-gradient(
+      ellipse 80% 60% at 50% -10%,
+      hsl(150 40% 18% / 0.5) 0%,
+      transparent 70%
+    );
   }
 
   html {
@@ -107,16 +126,26 @@
   ::-webkit-scrollbar-thumb {
     background: hsl(var(--muted));
     border-radius: 3px;
+    border: 1px solid hsl(var(--border));
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--muted-foreground));
+    background: hsl(150 20% 55%);
   }
 
-  /* Selection color */
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: hsl(90 15% 38%);
+  }
+
+  /* Ghibli watercolor selection */
   ::selection {
-    background: var(--accent-pink);
-    color: hsl(var(--foreground));
+    background: hsl(90 40% 80% / 0.7);
+    color: hsl(150 38% 12%);
+  }
+
+  .dark ::selection {
+    background: hsl(150 30% 28% / 0.8);
+    color: hsl(90 28% 88%);
   }
 }
 
@@ -130,4 +159,38 @@
   .text-accent-blue {
     color: var(--accent-blue);
   }
+}
+
+/* —— Ghibli soot sprite (susuwatari) floaters —— */
+@keyframes soot-float {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.55;
+  }
+  80% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(var(--drift)) scale(0.6);
+    opacity: 0;
+  }
+}
+
+.soot-sprite {
+  position: fixed;
+  bottom: -12px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: hsl(150 18% 28% / 0.35);
+  pointer-events: none;
+  z-index: 0;
+  animation: soot-float var(--duration) ease-in var(--delay) infinite;
+}
+
+.dark .soot-sprite {
+  background: hsl(90 20% 80% / 0.18);
 }
