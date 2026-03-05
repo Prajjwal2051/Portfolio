@@ -1,5 +1,38 @@
 import { motion } from "framer-motion";
+import confetti from "canvas-confetti";
 import { portfolioData } from "@/data/portfolio";
+import { TypewriterText } from "@/components/shared/TypewriterText";
+import { MagneticButton } from "@/components/shared/MagneticButton";
+
+const ROLES = [
+  "full-stack developer",
+  "open-source contributor",
+  "linux enthusiast",
+  "backend engineer",
+];
+
+function fireConfetti() {
+  confetti({
+    particleCount: 160,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: ["#e8a0b0", "#d4a843", "#7fb5c5", "#a0e8b0"],
+  });
+  setTimeout(() => {
+    confetti({
+      particleCount: 60,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0, y: 0.7 },
+    });
+    confetti({
+      particleCount: 60,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1, y: 0.7 },
+    });
+  }, 200);
+}
 
 export function Hero() {
   const colorClassMap = {
@@ -63,6 +96,42 @@ export function Hero() {
           contributions to building full-stack platforms.{" "}
           <span className="text-muted-foreground">*</span>
         </p>
+      </motion.div>
+
+      {/* Typewriter role cycling */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.55, duration: 0.5 }}
+        className="mt-4 text-sm text-muted-foreground"
+      >
+        currently:{" "}
+        <TypewriterText
+          words={ROLES}
+          className="text-foreground font-medium"
+        />
+      </motion.div>
+
+      {/* Hire Me button */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        className="mt-7"
+      >
+        <MagneticButton
+          onClick={fireConfetti}
+          className="group inline-flex items-center gap-2 border border-border/60 hover:border-foreground/40 px-4 py-2 rounded-full text-sm text-muted-foreground hover:text-foreground transition-all duration-200 hover:bg-muted/30"
+        >
+          <span>hire me</span>
+          <motion.span
+            className="text-base"
+            animate={{ rotate: [0, 15, -10, 15, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}
+          >
+            🎉
+          </motion.span>
+        </MagneticButton>
       </motion.div>
     </section>
   );

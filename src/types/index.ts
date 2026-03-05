@@ -83,4 +83,5 @@ export type SectionId =
   | "experience"
   | "education"
   | "about"
+  | "blog"
   | "contact";
