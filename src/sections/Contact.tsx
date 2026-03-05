@@ -1,11 +1,23 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useRef } from "react";
 import { portfolioData } from "@/data/portfolio";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Separator } from "@/components/ui/separator";
 
 export function Contact() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useSpring(useTransform(scrollYProgress, [0, 0.3], [40, 0]), { stiffness: 80, damping: 20 });
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+
   return (
-    <section id="contact" className="py-8 pb-16" aria-label="Contact">
+    <motion.section
+      id="contact"
+      className="py-8 pb-16"
+      aria-label="Contact"
+      ref={ref}
+      style={{ opacity, y }}
+    >
       <Separator className="mb-8 opacity-30" />
       <SectionHeading>contact</SectionHeading>
 
@@ -19,10 +31,11 @@ export function Contact() {
         {portfolioData.socials.map((social, index) => (
           <motion.div
             key={social.label}
-            initial={{ opacity: 0, x: -10 }}
+            initial={{ opacity: 0, x: -14 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: index * 0.06 }}
+            transition={{ duration: 0.35, delay: index * 0.07, ease: "easeOut" }}
+            whileHover={{ x: 6, transition: { duration: 0.2 } }}
           >
             <a
               href={social.href}
@@ -41,6 +54,6 @@ export function Contact() {
           </motion.div>
         ))}
       </motion.div>
-    </section>
+    </motion.section>
   );
 }

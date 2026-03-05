@@ -1,13 +1,24 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useRef } from "react";
 import { portfolioData } from "@/data/portfolio";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Separator } from "@/components/ui/separator";
 
 export function About() {
   const { likesAndDislikes } = portfolioData;
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useSpring(useTransform(scrollYProgress, [0, 0.3], [40, 0]), { stiffness: 80, damping: 20 });
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   return (
-    <section id="about" className="py-8" aria-label="About">
+    <motion.section
+      id="about"
+      className="py-8"
+      aria-label="About"
+      ref={ref}
+      style={{ opacity, y }}
+    >
       <Separator className="mb-8 opacity-30" />
       <SectionHeading>about</SectionHeading>
 
@@ -80,6 +91,6 @@ export function About() {
           </motion.div>
         )}
       </motion.div>
-    </section>
+    </motion.section>
   );
 }

@@ -7,6 +7,10 @@ const config: Config = {
     extend: {
       fontFamily: {
         mono: [
+          '"JetBrainsMono Nerd Font"',
+          '"JetBrains Mono"',
+          '"UbuntuMono Nerd Font"',
+          '"Ubuntu Mono"',
           '"Cascadia Code"',
           '"Cascadia Mono"',
           "var(--apple-ui-monospace)",

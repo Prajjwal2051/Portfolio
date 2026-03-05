@@ -8,12 +8,12 @@ import { Education } from "@/sections/Education";
 import { About } from "@/sections/About";
 import { GitHub } from "@/sections/GitHub";
 import { Contact } from "@/sections/Contact";
-import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
       <TooltipProvider>
+        <CatCursor />
         <Layout>
           <Hero />
           <Projects />
