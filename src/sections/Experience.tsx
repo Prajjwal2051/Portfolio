@@ -29,7 +29,7 @@ export function Experience() {
         viewport={{ once: true }}
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
       >
-        {portfolioData.experience.map((exp, index) => (
+        {portfolioData.experience.map((exp) => (
           <motion.div
             key={exp.id}
             variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } } }}
