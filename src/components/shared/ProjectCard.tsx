@@ -1,4 +1,4 @@
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, Clock } from "lucide-react";
 import type { Project } from "@/types";
 import { motion } from "framer-motion";
 import { TagBadge } from "@/components/shared/TagBadge";
@@ -30,13 +30,19 @@ export function ProjectCard({ project }: ProjectCardProps) {
               rel="noopener noreferrer"
               className="font-medium text-foreground hover:text-accent-pink transition-colors"
             >
-              {project.name} <span className="text-muted-foreground">-&gt;</span>
+              {project.name} <span className="text-muted-foreground">→</span>
             </a>
           ) : (
             <span className="font-medium text-foreground">{project.name}</span>
           );
         })()}
         <div className="flex items-center gap-1.5 ml-auto">
+          {project.lastUpdated && (
+            <span className="flex items-center gap-1 text-[10px] text-muted-foreground/50">
+              <Clock className="h-2.5 w-2.5" />
+              {project.lastUpdated}
+            </span>
+          )}
           {project.githubUrl && (
             <a
               href={project.githubUrl}

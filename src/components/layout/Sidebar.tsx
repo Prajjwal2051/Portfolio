@@ -4,6 +4,7 @@ import { portfolioData } from "@/data/portfolio";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { Separator } from "@/components/ui/separator";
 import { Github, Twitter, Linkedin, Hash, BookOpen, MessageSquare } from "lucide-react";
+import { VisitorCounter } from "@/components/shared/VisitorCounter";
 import type { SectionId } from "@/types";
 
 const socials = [
@@ -135,6 +136,7 @@ export function Sidebar() {
           ))}
         </div>
         <Separator className="opacity-30" />
+        <VisitorCounter />
         <div className="text-xs text-muted-foreground/60 space-y-0.5">
           <p>© {new Date().getFullYear()} {portfolioData.name.toLowerCase()}</p>
           <p>• all rights reserved</p>
