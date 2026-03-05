@@ -1,5 +1,6 @@
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AnimatePresence, motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Hero } from "@/sections/Hero";
 import { Projects } from "@/sections/Projects";
@@ -8,6 +9,7 @@ import { Education } from "@/sections/Education";
 import { About } from "@/sections/About";
 import { GitHub } from "@/sections/GitHub";
 import { Contact } from "@/sections/Contact";
+import { CatCursor } from "@/components/shared/CatCursor";
 
 function App() {
   return (
@@ -23,7 +25,6 @@ function App() {
           <GitHub />
           <Contact />
         </Layout>
-        <Analytics />
       </TooltipProvider>
     </ThemeProvider>
   );

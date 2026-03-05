@@ -32,6 +32,7 @@ export const portfolioData: PortfolioData = {
       link: "https://github.com/Prajjwal2051/Viewly",
       githubUrl: "https://github.com/Prajjwal2051/Viewly",
       liveUrl: "https://viewly-aa2e.vercel.app/",
+      lastUpdated: "jan 2025",
       tags: [
         "node.js",
         "express.js",
@@ -61,6 +62,7 @@ export const portfolioData: PortfolioData = {
       description: "real-time multi-user terminal chat application using Python sockets",
       link: "https://github.com/Prajjwal2051/Chat-Connect",
       githubUrl: "https://github.com/Prajjwal2051/Chat-Connect",
+      lastUpdated: "oct 2024",
       tags: ["python", "sockets", "multithreading", "networking", "cli"],
       icon: "💬",
       highlights: [
@@ -77,6 +79,7 @@ export const portfolioData: PortfolioData = {
       description: "Python keylogger with real-time keystroke capture and automatic email reporting",
       link: "https://github.com/Prajjwal2051/Key-Logger",
       githubUrl: "https://github.com/Prajjwal2051/Key-Logger",
+      lastUpdated: "nov 2024",
       tags: ["python", "pynput", "smtp", "tkinter", "cybersecurity"],
       icon: "⌨️",
       highlights: [
@@ -93,6 +96,7 @@ export const portfolioData: PortfolioData = {
       description: "contactless smart dustbin using Arduino, ultrasonic sensor, and servo motor with a web dashboard",
       link: "https://github.com/Prajjwal2051/SmartDustbinUsingArduino",
       githubUrl: "https://github.com/Prajjwal2051/SmartDustbinUsingArduino",
+      lastUpdated: "dec 2024",
       tags: ["arduino", "c++", "typescript", "iot", "ultrasonic sensor", "servo motor"],
       icon: "🗑️",
       highlights: [

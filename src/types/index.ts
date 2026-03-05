@@ -10,6 +10,7 @@ export interface Project {
   tags: string[];
   icon?: string;
   highlights?: string[];
+  lastUpdated?: string;
 }
 
 export interface Experience {
