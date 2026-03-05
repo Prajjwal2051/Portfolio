@@ -14,6 +14,7 @@ import { CatCursor } from "@/components/shared/CatCursor";
 import { ScrollProgressBar } from "@/components/shared/ScrollProgressBar";
 import { LoadingScreen } from "@/components/shared/LoadingScreen";
 import { NoiseOverlay } from "@/components/shared/NoiseOverlay";
+import { SootSprites } from "@/components/shared/SootSprites";
 
 function App() {
   const [showLoading] = useState(() => !sessionStorage.getItem("portfolio_loaded"));
@@ -27,6 +28,7 @@ function App() {
       <TooltipProvider>
         {showLoading && <LoadingScreen />}
         <NoiseOverlay />
+        <SootSprites />
         <ScrollProgressBar />
         <CatCursor />
         <Layout>
