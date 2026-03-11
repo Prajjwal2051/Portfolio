@@ -28,11 +28,11 @@ export function Layout({ children }: LayoutProps) {
 
       {/* Mobile layout */}
       <main className="lg:hidden">
-        <MobileBottomNav />
         <CoverHeader />
         <div className="max-w-2xl mx-auto px-5 sm:px-8 py-8 pb-28">{children}</div>
       </main>
 
+      <MobileBottomNav />
       <ThemeToggle />
     </div>
   );

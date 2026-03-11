@@ -12,7 +12,9 @@ export function useActiveSection(sectionIds: SectionId[]) {
     for (let i = sectionIds.length - 1; i >= 0; i--) {
       const sectionId = sectionIds[i];
       if (!sectionId) continue;
-      const element = document.getElementById(sectionId);
+      // Pick the visible element (offsetParent !== null), not the hidden desktop duplicate
+      const all = Array.from(document.querySelectorAll(`#${sectionId}`)) as HTMLElement[];
+      const element = all.find((el) => el.offsetParent !== null) ?? all[0];
       if (element && element.offsetTop <= scrollPosition) {
         setActiveSection(sectionId);
         return;
@@ -27,9 +29,11 @@ export function useActiveSection(sectionIds: SectionId[]) {
   }, [handleScroll]);
 
   const scrollToSection = useCallback((id: SectionId) => {
-    const element = document.getElementById(id);
+    // There may be two elements with the same id (desktop hidden + mobile visible).
+    // Pick the one whose offsetParent is not null (i.e. actually rendered/visible).
+    const all = Array.from(document.querySelectorAll(`#${id}`)) as HTMLElement[];
+    const element = all.find((el) => el.offsetParent !== null) ?? all[0];
     if (!element) return;
-    // Traverse offsetParent chain — works correctly regardless of CSS zoom
     let top = 0;
     let el: HTMLElement | null = element;
     while (el) {
