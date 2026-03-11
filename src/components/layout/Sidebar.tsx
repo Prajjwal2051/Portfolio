@@ -32,6 +32,7 @@ export function Sidebar() {
 
   return (
     <aside className="flex flex-col sticky top-0 w-[200px] xl:w-[220px] shrink-0 p-5 xl:p-6 z-40 overflow-y-auto" style={{ height: 'calc(100vh / 1.25)' }}>
+      {/* Only rendered on lg+, so calc(100vh / 1.25) is always correct here */}
       {/* Top: Identity */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -71,10 +72,10 @@ export function Sidebar() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: 0.15 + index * 0.08, ease: "easeOut" }}
               >
-                <button
-                  onClick={() => scrollToSection(sectionId)}
+                <a
+                  href={`#${sectionId}`}
                   className={cn(
-                    "flex items-center gap-2 py-1.5 text-sm font-bold transition-all duration-200 w-full text-left group",
+                    "flex items-center gap-2 py-1.5 text-sm font-bold transition-all duration-200 w-full text-left group no-underline",
                     isActive
                       ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground",
@@ -102,7 +103,7 @@ export function Sidebar() {
                   >
                     →
                   </motion.span>
-                </button>
+                </a>
               </motion.li>
             );
           })}

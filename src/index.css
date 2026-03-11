@@ -2,12 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --page-zoom: 1.25;
-}
-
-html {
-  zoom: var(--page-zoom);
+@media (min-width: 1024px) {
+  html {
+    zoom: 1.25;
+  }
 }
 
 @layer base {
