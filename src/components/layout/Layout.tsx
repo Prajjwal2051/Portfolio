@@ -1,4 +1,5 @@
 import { Sidebar } from "./Sidebar";
+import { MobileBottomNav } from "./MobileBottomNav";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { CoverHeader } from "@/components/shared/CoverHeader";
 
@@ -27,8 +28,9 @@ export function Layout({ children }: LayoutProps) {
 
       {/* Mobile layout */}
       <main className="lg:hidden">
+        <MobileBottomNav />
         <CoverHeader />
-        <div className="max-w-2xl mx-auto px-5 sm:px-8 py-8">{children}</div>
+        <div className="max-w-2xl mx-auto px-5 sm:px-8 py-8 pb-28">{children}</div>
       </main>
 
       <ThemeToggle />

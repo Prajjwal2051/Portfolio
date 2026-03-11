@@ -32,7 +32,7 @@ export function ThemeToggle() {
         onClick={handleToggle}
         whileHover={{ scale: 1.15 }}
         whileTap={{ scale: 0.9 }}
-        className="fixed bottom-5 right-5 z-50 text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors select-none"
+        className="fixed top-4 right-4 z-50 text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors select-none"
         aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       >
         {isDark ? "☀️" : "🌙"}

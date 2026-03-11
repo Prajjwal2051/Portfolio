@@ -28,9 +28,15 @@ export function useActiveSection(sectionIds: SectionId[]) {
 
   const scrollToSection = useCallback((id: SectionId) => {
     const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+    if (!element) return;
+    // Traverse offsetParent chain — works correctly regardless of CSS zoom
+    let top = 0;
+    let el: HTMLElement | null = element;
+    while (el) {
+      top += el.offsetTop;
+      el = el.offsetParent as HTMLElement | null;
     }
+    window.scrollTo({ top, behavior: "smooth" });
   }, []);
 
   return { activeSection, scrollToSection };
