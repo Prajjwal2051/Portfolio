@@ -31,7 +31,7 @@ export function Sidebar() {
   const { activeSection, scrollToSection } = useActiveSection(sectionIds);
 
   return (
-    <aside className="flex flex-col sticky top-0 h-screen w-[200px] xl:w-[220px] shrink-0 p-5 xl:p-6 z-40 overflow-y-auto">
+    <aside className="flex flex-col sticky top-0 w-[200px] xl:w-[220px] shrink-0 p-5 xl:p-6 z-40 overflow-y-auto" style={{ height: 'calc(100vh / 1.25)' }}>
       {/* Top: Identity */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}

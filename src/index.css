@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --page-zoom: 1.25;
+}
+
+html {
+  zoom: var(--page-zoom);
+}
+
 @layer base {
   /* ── Ghibli Light: Totoro Meadow Day ── */
   :root {

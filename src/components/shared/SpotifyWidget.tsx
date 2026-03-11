@@ -57,7 +57,7 @@ export function SpotifyWidget() {
 
     return (
         <motion.a
-            href="https://open.spotify.com/user/prajjwal2051"
+            href="https://open.spotify.com/?flow_ctx=4e73bc39-5590-48b4-8a7e-3eb9ab41cb0e%3A1773266976"
             target="_blank"
             rel="noreferrer"
             initial={{ opacity: 0, y: 8 }}
