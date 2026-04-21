@@ -34,12 +34,28 @@ function fireConfetti() {
   }, 200);
 }
 
+function scrollToContact() {
+  const contactSection = document.getElementById("contact");
+  if (contactSection) {
+    contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 export function Hero() {
   const colorClassMap = {
     pink: "text-accent-pink",
     yellow: "text-accent-yellow",
     blue: "text-accent-blue",
   } as const;
+
+  const handleHireMeClick = () => {
+    fireConfetti();
+    scrollToContact();
+  };
+
+  const handleResumeClick = () => {
+    window.open("/resume/PrajjwalSahuResume.pdf", "_blank", "noopener,noreferrer");
+  };
 
   return (
     <section
@@ -106,10 +122,7 @@ export function Hero() {
         className="mt-4 text-sm text-muted-foreground"
       >
         currently:{" "}
-        <TypewriterText
-          words={ROLES}
-          className="text-foreground font-medium"
-        />
+        <TypewriterText words={ROLES} className="text-foreground font-medium" />
       </motion.div>
 
       {/* Hire Me button */}
@@ -117,10 +130,10 @@ export function Hero() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-        className="mt-7"
+        className="mt-7 flex items-center gap-3 flex-wrap"
       >
         <MagneticButton
-          onClick={fireConfetti}
+          onClick={handleHireMeClick}
           className="group inline-flex items-center gap-2 border border-border/60 hover:border-foreground/40 px-4 py-2 rounded-full text-sm text-muted-foreground hover:text-foreground transition-all duration-200 hover:bg-muted/30"
         >
           <span>hire me</span>
@@ -131,6 +144,14 @@ export function Hero() {
           >
             🎉
           </motion.span>
+        </MagneticButton>
+
+        <MagneticButton
+          onClick={handleResumeClick}
+          className="group inline-flex items-center gap-2 border border-border/60 hover:border-foreground/40 px-4 py-2 rounded-full text-sm text-muted-foreground hover:text-foreground transition-all duration-200 hover:bg-muted/30"
+        >
+          <span>download resume</span>
+          <span className="text-base">📄</span>
         </MagneticButton>
       </motion.div>
     </section>

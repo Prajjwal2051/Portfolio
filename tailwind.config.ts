@@ -20,7 +20,7 @@ const config: Config = {
           '"Courier"',
           "monospace",
         ],
-        cursive: ['"Klee One"', '"Zen Kurenaido"', '"Caveat"', 'cursive'],
+        cursive: ['"Klee One"', '"Zen Kurenaido"', '"Caveat"', "cursive"],
       },
       colors: {
         border: "hsl(var(--border))",

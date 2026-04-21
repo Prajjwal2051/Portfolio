@@ -17,7 +17,9 @@ import { NoiseOverlay } from "@/components/shared/NoiseOverlay";
 import { SootSprites } from "@/components/shared/SootSprites";
 
 function App() {
-  const [showLoading] = useState(() => !sessionStorage.getItem("portfolio_loaded"));
+  const [showLoading] = useState(
+    () => !sessionStorage.getItem("portfolio_loaded"),
+  );
 
   if (showLoading) {
     sessionStorage.setItem("portfolio_loaded", "1");

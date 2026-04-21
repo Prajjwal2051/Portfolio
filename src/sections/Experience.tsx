@@ -7,8 +7,14 @@ import { Separator } from "@/components/ui/separator";
 
 export function Experience() {
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useSpring(useTransform(scrollYProgress, [0, 0.3], [40, 0]), { stiffness: 80, damping: 20 });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useSpring(useTransform(scrollYProgress, [0, 0.3], [40, 0]), {
+    stiffness: 80,
+    damping: 20,
+  });
   const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   return (
@@ -27,12 +33,22 @@ export function Experience() {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
-        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
+        variants={{
+          hidden: {},
+          show: { transition: { staggerChildren: 0.1 } },
+        }}
       >
         {portfolioData.experience.map((exp) => (
           <motion.div
             key={exp.id}
-            variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } } }}
+            variants={{
+              hidden: { opacity: 0, y: 18 },
+              show: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.45, ease: "easeOut" },
+              },
+            }}
             whileHover={{ x: 4, transition: { duration: 0.2 } }}
             className="cursor-default"
           >
@@ -40,13 +56,20 @@ export function Experience() {
               <h3 className="text-sm font-medium">
                 {exp.role}
                 {exp.company && (
-                  <span className="text-muted-foreground font-normal"> — {exp.company}</span>
+                  <span className="text-muted-foreground font-normal">
+                    {" "}
+                    — {exp.company}
+                  </span>
                 )}
               </h3>
-              <span className="text-xs text-muted-foreground shrink-0">{exp.period}</span>
+              <span className="text-xs text-muted-foreground shrink-0">
+                {exp.period}
+              </span>
             </div>
             {exp.location && (
-              <p className="text-xs text-muted-foreground/60 mb-1">{exp.location}</p>
+              <p className="text-xs text-muted-foreground/60 mb-1">
+                {exp.location}
+              </p>
             )}
             <p className="text-xs text-muted-foreground leading-relaxed mb-2">
               {exp.description}
@@ -54,7 +77,10 @@ export function Experience() {
             {exp.highlights && exp.highlights.length > 0 && (
               <ul className="mb-2 space-y-0.5">
                 {exp.highlights.map((h, i) => (
-                  <li key={i} className="flex gap-2 text-xs text-muted-foreground">
+                  <li
+                    key={i}
+                    className="flex gap-2 text-xs text-muted-foreground"
+                  >
                     <span className="shrink-0 mt-0.5">•</span>
                     <span>{h}</span>
                   </li>

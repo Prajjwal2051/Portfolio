@@ -3,18 +3,41 @@ import { cn } from "@/lib/utils";
 import { portfolioData } from "@/data/portfolio";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { Separator } from "@/components/ui/separator";
-import { Github, Twitter, Linkedin, Hash, BookOpen, MessageSquare } from "lucide-react";
+import {
+  Github,
+  Twitter,
+  Linkedin,
+  Hash,
+  BookOpen,
+  MessageSquare,
+} from "lucide-react";
 import { VisitorCounter } from "@/components/shared/VisitorCounter";
 import { SpotifyWidget } from "@/components/shared/SpotifyWidget";
 import type { SectionId } from "@/types";
 
 const socials = [
-  { label: "GitHub", href: "https://www.github.com/Prajjwal2051", Icon: Github },
+  {
+    label: "GitHub",
+    href: "https://www.github.com/Prajjwal2051",
+    Icon: Github,
+  },
   { label: "Twitter", href: "https://www.x.com/prajjwal2051__", Icon: Twitter },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/prajjwal-sahu-498620221", Icon: Linkedin },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/prajjwal-sahu-498620221",
+    Icon: Linkedin,
+  },
   { label: "Hashnode", href: "https://prajjwalsahuu.hashnode.dev", Icon: Hash },
-  { label: "Medium", href: "http://www.medium.com/prajjwal2051", Icon: BookOpen },
-  { label: "Discord", href: "https://discord.com/users/prajjwal4966", Icon: MessageSquare },
+  {
+    label: "Medium",
+    href: "http://www.medium.com/prajjwal2051",
+    Icon: BookOpen,
+  },
+  {
+    label: "Discord",
+    href: "https://discord.com/users/prajjwal4966",
+    Icon: MessageSquare,
+  },
 ];
 
 const sectionIds: SectionId[] = [
@@ -31,7 +54,10 @@ export function Sidebar() {
   const { activeSection, scrollToSection } = useActiveSection(sectionIds);
 
   return (
-    <aside className="flex flex-col sticky top-0 w-[200px] xl:w-[220px] shrink-0 p-5 xl:p-6 z-40 overflow-y-auto" style={{ height: 'calc(100vh / 1.25)' }}>
+    <aside
+      className="flex flex-col sticky top-0 w-[200px] xl:w-[220px] shrink-0 p-5 xl:p-6 z-40 overflow-y-auto"
+      style={{ height: "calc(100vh / 1.25)" }}
+    >
       {/* Only rendered on lg+, so calc(100vh / 1.25) is always correct here */}
       {/* Top: Identity */}
       <motion.div
@@ -52,7 +78,9 @@ export function Sidebar() {
 
         {/* Name + Role */}
         <div className="mt-3 space-y-0.5">
-          <p className="text-sm font-bold tracking-tight">{portfolioData.name}</p>
+          <p className="text-sm font-bold tracking-tight">
+            {portfolioData.name}
+          </p>
           <p className="text-xs text-muted-foreground lowercase tracking-wide">
             {portfolioData.role}
           </p>
@@ -60,7 +88,10 @@ export function Sidebar() {
       </motion.div>
 
       {/* Middle: Navigation */}
-      <nav className="flex-1 flex flex-col justify-center" aria-label="Main navigation">
+      <nav
+        className="flex-1 flex flex-col justify-center"
+        aria-label="Main navigation"
+      >
         <ul className="space-y-2">
           {portfolioData.navItems.map((item, index) => {
             const sectionId = item.href.replace("#", "") as SectionId;
@@ -70,7 +101,11 @@ export function Sidebar() {
                 key={item.label}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, delay: 0.15 + index * 0.08, ease: "easeOut" }}
+                transition={{
+                  duration: 0.35,
+                  delay: 0.15 + index * 0.08,
+                  ease: "easeOut",
+                }}
               >
                 <a
                   href={`#${sectionId}`}
@@ -83,7 +118,10 @@ export function Sidebar() {
                   aria-current={isActive ? "true" : undefined}
                 >
                   <motion.span
-                    animate={{ scale: isActive ? 1.3 : 1, opacity: isActive ? 1 : 0.5 }}
+                    animate={{
+                      scale: isActive ? 1.3 : 1,
+                      opacity: isActive ? 1 : 0.5,
+                    }}
                     transition={{ duration: 0.2 }}
                     className="text-sm"
                   >
@@ -96,7 +134,10 @@ export function Sidebar() {
                     {item.label}
                   </motion.span>
                   <motion.span
-                    animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -4 }}
+                    animate={{
+                      opacity: isActive ? 1 : 0,
+                      x: isActive ? 0 : -4,
+                    }}
                     whileHover={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.2 }}
                     className="text-xs"
@@ -143,7 +184,9 @@ export function Sidebar() {
         <Separator className="opacity-30" />
         <VisitorCounter />
         <div className="text-xs text-muted-foreground/60 space-y-0.5">
-          <p>© {new Date().getFullYear()} {portfolioData.name.toLowerCase()}</p>
+          <p>
+            © {new Date().getFullYear()} {portfolioData.name.toLowerCase()}
+          </p>
           <p>• all rights reserved</p>
         </div>
       </motion.div>

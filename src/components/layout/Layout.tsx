@@ -19,9 +19,7 @@ export function Layout({ children }: LayoutProps) {
           {/* Main content */}
           <main className="flex-1 min-w-0">
             <CoverHeader />
-            <div className="px-6 xl:px-8 py-8 lg:py-10">
-              {children}
-            </div>
+            <div className="px-6 xl:px-8 py-8 lg:py-10">{children}</div>
           </main>
         </div>
       </div>
@@ -29,7 +27,9 @@ export function Layout({ children }: LayoutProps) {
       {/* Mobile layout */}
       <main className="lg:hidden">
         <CoverHeader />
-        <div className="max-w-2xl mx-auto px-5 sm:px-8 py-8 pb-28">{children}</div>
+        <div className="max-w-2xl mx-auto px-5 sm:px-8 py-8 pb-28">
+          {children}
+        </div>
       </main>
 
       <MobileBottomNav />
