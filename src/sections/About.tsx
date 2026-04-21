@@ -7,8 +7,14 @@ import { Separator } from "@/components/ui/separator";
 export function About() {
   const { likesAndDislikes } = portfolioData;
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useSpring(useTransform(scrollYProgress, [0, 0.3], [40, 0]), { stiffness: 80, damping: 20 });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useSpring(useTransform(scrollYProgress, [0, 0.3], [40, 0]), {
+    stiffness: 80,
+    damping: 20,
+  });
   const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   return (

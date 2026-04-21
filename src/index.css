@@ -98,7 +98,7 @@
       "liga" 1,
       "calt" 1;
     font-variant-ligatures: contextual;
-    cursor: none;
+    cursor: auto;
     /* Ghibli animated meadow gradient */
     background-image: radial-gradient(
       ellipse 80% 60% at 50% -10%,

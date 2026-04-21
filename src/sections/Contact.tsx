@@ -12,12 +12,22 @@ const FORMSPREE_ID = "YOUR_FORM_ID";
 
 export function Contact() {
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useSpring(useTransform(scrollYProgress, [0, 0.3], [40, 0]), { stiffness: 80, damping: 20 });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useSpring(useTransform(scrollYProgress, [0, 0.3], [40, 0]), {
+    stiffness: 80,
+    damping: 20,
+  });
   const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
   const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState("email copied to clipboard!");
-  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [toastMessage, setToastMessage] = useState(
+    "email copied to clipboard!",
+  );
+  const [formStatus, setFormStatus] = useState<
+    "idle" | "sending" | "sent" | "error"
+  >("idle");
   const hideToast = useCallback(() => setToastVisible(false), []);
 
   const copyEmail = () => {
@@ -83,7 +93,11 @@ export function Contact() {
               initial={{ opacity: 0, x: -14 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.35, delay: index * 0.07, ease: "easeOut" }}
+              transition={{
+                duration: 0.35,
+                delay: index * 0.07,
+                ease: "easeOut",
+              }}
               whileHover={{ x: 6, transition: { duration: 0.2 } }}
               className="flex items-center gap-2"
             >
@@ -98,7 +112,9 @@ export function Contact() {
                 <span className="group-hover:text-accent-pink transition-colors">
                   {social.label === "email"
                     ? portfolioData.email
-                    : social.href.replace(/https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
+                    : social.href
+                        .replace(/https?:\/\/(www\.)?/, "")
+                        .replace(/\/$/, "")}
                 </span>
               </a>
               {social.label === "email" && (
@@ -159,7 +175,9 @@ export function Contact() {
                 : "send message"}
           </MagneticButton>
           {formStatus === "error" && (
-            <p className="text-xs text-red-400">something went wrong. try again?</p>
+            <p className="text-xs text-red-400">
+              something went wrong. try again?
+            </p>
           )}
         </motion.form>
       </motion.section>

@@ -27,6 +27,34 @@ export const portfolioData: PortfolioData = {
 
   projects: [
     {
+      id: "builditup-orbit-code",
+      name: "orbit code",
+      description:
+        "multiplayer browser-based IDE with real-time collaboration, AI tooling, and GitHub sync",
+      link: "https://github.com/Prajjwal2051/BuildItUp",
+      githubUrl: "https://github.com/Prajjwal2051/BuildItUp",
+      liveUrl: "https://builditup.onrender.com/",
+      lastUpdated: "jan 2026",
+      tags: [
+        "next.js 16",
+        "typescript",
+        "monaco editor",
+        "operational transformation",
+        "docker",
+        "socket.io",
+        "prisma",
+        "nextauth v5",
+        "github api",
+      ],
+      icon: "🛰️",
+      highlights: [
+        "Built a multiplayer browser-based IDE using Next.js 16, TypeScript, and Monaco Editor with real-time collaborative coding via an Operational Transformation (OT) engine for 3 collaborators at 18ms latency",
+        "Architected a Docker-isolated sandboxed code execution pipeline with 6 AI providers (OpenAI, Gemini, Claude) via Socket.io and integrated AI chat sidebar plus inline ghost-text completions",
+        "Built a custom Git engine with commit diffing, branch management, push and pull operations, and GitHub API integration for real remote repository sync directly from the browser IDE",
+        "Designed Prisma ORM models with NextAuth v5 OAuth, RBAC, and CI/CD deployment on Vercel with COEP/COOP headers for SharedArrayBuffer support",
+      ],
+    },
+    {
       id: "viewly",
       name: "viewly",
       description: "full stack video streaming and social media platform",
@@ -60,7 +88,8 @@ export const portfolioData: PortfolioData = {
     {
       id: "chat-connect",
       name: "chat-connect",
-      description: "real-time multi-user terminal chat application using Python sockets",
+      description:
+        "real-time multi-user terminal chat application using Python sockets",
       link: "https://github.com/Prajjwal2051/Chat-Connect",
       githubUrl: "https://github.com/Prajjwal2051/Chat-Connect",
       lastUpdated: "oct 2024",
@@ -77,7 +106,8 @@ export const portfolioData: PortfolioData = {
     {
       id: "key-logger",
       name: "key-logger",
-      description: "Python keylogger with real-time keystroke capture and automatic email reporting",
+      description:
+        "Python keylogger with real-time keystroke capture and automatic email reporting",
       link: "https://github.com/Prajjwal2051/Key-Logger",
       githubUrl: "https://github.com/Prajjwal2051/Key-Logger",
       lastUpdated: "nov 2024",
@@ -94,11 +124,19 @@ export const portfolioData: PortfolioData = {
     {
       id: "smart-dustbin",
       name: "smart-dustbin",
-      description: "contactless smart dustbin using Arduino, ultrasonic sensor, and servo motor with a web dashboard",
+      description:
+        "contactless smart dustbin using Arduino, ultrasonic sensor, and servo motor with a web dashboard",
       link: "https://github.com/Prajjwal2051/SmartDustbinUsingArduino",
       githubUrl: "https://github.com/Prajjwal2051/SmartDustbinUsingArduino",
       lastUpdated: "dec 2024",
-      tags: ["arduino", "c++", "typescript", "iot", "ultrasonic sensor", "servo motor"],
+      tags: [
+        "arduino",
+        "c++",
+        "typescript",
+        "iot",
+        "ultrasonic sensor",
+        "servo motor",
+      ],
       icon: "🗑️",
       highlights: [
         "Built an IoT-based smart dustbin using Arduino Uno, HC-SR04 ultrasonic sensor, and SG90 servo motor for hands-free lid control",
@@ -128,7 +166,16 @@ export const portfolioData: PortfolioData = {
         "Hosted Git-Gud educational event to teach students Git workflows and open-source contribution practices",
         "Designed and developed club main website to improve OWASP NIE's online presence",
       ],
-      tags: ["next.js", "typescript", "shadcn/ui", "tailwind css", "linux", "open-source", "git", "events"],
+      tags: [
+        "next.js",
+        "typescript",
+        "shadcn/ui",
+        "tailwind css",
+        "linux",
+        "open-source",
+        "git",
+        "events",
+      ],
     },
   ],
 
