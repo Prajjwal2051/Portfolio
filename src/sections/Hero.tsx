@@ -84,7 +84,6 @@ export function Hero() {
       }}
     >
       <ParticleField />
-      <div className="aurora-bg" aria-hidden="true" />
 
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
