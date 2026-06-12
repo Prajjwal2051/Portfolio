@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@media (min-width: 1024px) {
-  html {
-    zoom: 1.25;
-  }
-}
 
 @layer base {
   /* ── Ghibli Light: Totoro Meadow Day ── */
@@ -194,9 +189,78 @@
   background: hsl(150 18% 28% / 0.35);
   pointer-events: none;
   z-index: 0;
-  animation: soot-float var(--duration) ease-in var(--delay) infinite;
+  animation: soot-float var(--duration) ease-in-out var(--delay) infinite;
 }
 
 .dark .soot-sprite {
   background: hsl(90 20% 80% / 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .soot-sprite {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* —— Aurora mesh gradient (hero background) —— */
+@keyframes aurora-breathe {
+  0%   { transform: scale(1)    rotate(0deg);  filter: hue-rotate(0deg); }
+  50%  { transform: scale(1.08) rotate(3deg);  filter: hue-rotate(18deg); }
+  100% { transform: scale(1)    rotate(0deg);  filter: hue-rotate(0deg); }
+}
+
+.aurora-bg {
+  position: absolute;
+  inset: -30% -15%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 45% at 15% 40%, var(--accent-pink)  0%, transparent 65%),
+    radial-gradient(ellipse 50% 55% at 85% 25%, var(--accent-blue)  0%, transparent 65%),
+    radial-gradient(ellipse 45% 40% at 50% 85%, #6ee7b7             0%, transparent 60%);
+  opacity: 0.22;
+  animation: aurora-breathe 7s ease-in-out infinite;
+}
+
+.dark .aurora-bg { opacity: 0.12; }
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-bg { animation: none; }
+}
+
+/* —— Firefly particles (dark mode ambient) —— */
+.fireflies-container {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.firefly {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  animation:
+    firefly-drift   var(--ff-dur) ease-in-out var(--ff-delay) infinite alternate,
+    firefly-twinkle calc(var(--ff-dur) * 0.65) ease-in-out var(--ff-delay) infinite;
+}
+
+.firefly-gold  { background: #c8a540; box-shadow: 0 0 7px 2px #c8a54077; }
+.firefly-coral { background: #e8907a; box-shadow: 0 0 7px 2px #e8907a77; }
+.firefly-green { background: #6ee7b7; box-shadow: 0 0 6px 2px #6ee7b766; }
+
+@keyframes firefly-drift {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(var(--ff-dx), var(--ff-dy)); }
+}
+
+@keyframes firefly-twinkle {
+  0%, 100% { opacity: 0.1; }
+  50%       { opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .firefly { animation: none; opacity: 0; }
 }

@@ -15,6 +15,7 @@ import { ScrollProgressBar } from "@/components/shared/ScrollProgressBar";
 import { LoadingScreen } from "@/components/shared/LoadingScreen";
 import { NoiseOverlay } from "@/components/shared/NoiseOverlay";
 import { SootSprites } from "@/components/shared/SootSprites";
+import { Fireflies } from "@/components/shared/Fireflies";
 
 function App() {
   const [showLoading] = useState(
@@ -31,6 +32,7 @@ function App() {
         {showLoading && <LoadingScreen />}
         <NoiseOverlay />
         <SootSprites />
+        <Fireflies />
         <ScrollProgressBar />
         <CatCursor />
         <Layout>

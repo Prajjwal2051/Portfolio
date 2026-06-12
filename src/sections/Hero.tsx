@@ -1,8 +1,10 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
 import confetti from "canvas-confetti";
 import { portfolioData } from "@/data/portfolio";
 import { TypewriterText } from "@/components/shared/TypewriterText";
 import { MagneticButton } from "@/components/shared/MagneticButton";
+import { GlitchText } from "@/components/shared/GlitchText";
 
 const ROLES = [
   "full-stack developer",
@@ -42,6 +44,17 @@ function scrollToContact() {
 }
 
 export function Hero() {
+  const shouldReduce = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const exitScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.93]);
+  const exitOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0]);
+  const exitBlurVal = useTransform(scrollYProgress, [0, 0.45], [0, 10]);
+  const exitFilter = useTransform(exitBlurVal, (v) => `blur(${v}px)`);
+
   const colorClassMap = {
     pink: "text-accent-pink",
     yellow: "text-accent-yellow",
@@ -58,18 +71,26 @@ export function Hero() {
   };
 
   return (
-    <section
+    <motion.section
       id="hero"
-      className="flex flex-col justify-center pb-8"
+      ref={sectionRef}
+      className="relative flex flex-col justify-center pb-8 overflow-hidden"
       aria-label="Introduction"
+      style={shouldReduce ? {} : {
+        scale: exitScale,
+        opacity: exitOpacity,
+        filter: exitFilter,
+      }}
     >
+      <div className="aurora-bg" aria-hidden="true" />
+
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       >
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-4 font-cursive">
-          hello!
+          <GlitchText text="hello!" />
         </h1>
       </motion.div>
 
@@ -134,7 +155,7 @@ export function Hero() {
       >
         <MagneticButton
           onClick={handleHireMeClick}
-          className="group inline-flex items-center gap-2 border border-border/60 hover:border-foreground/40 px-4 py-2 rounded-full text-sm text-muted-foreground hover:text-foreground transition-all duration-200 hover:bg-muted/30"
+          className="group inline-flex items-center gap-2 border border-border/60 hover:border-foreground/40 px-4 py-2 rounded-full text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 hover:bg-muted/30"
         >
           <span>hire me</span>
           <motion.span
@@ -148,12 +169,12 @@ export function Hero() {
 
         <MagneticButton
           onClick={handleResumeClick}
-          className="group inline-flex items-center gap-2 border border-border/60 hover:border-foreground/40 px-4 py-2 rounded-full text-sm text-muted-foreground hover:text-foreground transition-all duration-200 hover:bg-muted/30"
+          className="group inline-flex items-center gap-2 border border-border/60 hover:border-foreground/40 px-4 py-2 rounded-full text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 hover:bg-muted/30"
         >
           <span>download resume</span>
           <span className="text-base">📄</span>
         </MagneticButton>
       </motion.div>
-    </section>
+    </motion.section>
   );
 }
