@@ -4,9 +4,9 @@ import { SectionHeading } from "@/components/shared/SectionHeading";
 import { ProjectCard } from "@/components/shared/ProjectCard";
 import { Separator } from "@/components/ui/separator";
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
+const item = {
+  hidden: { opacity: 0, y: 18 },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
 export function Projects() {
@@ -35,14 +35,21 @@ export function Projects() {
       <SectionHeading>projects</SectionHeading>
 
       <motion.div
-        className="space-y-0"
-        variants={container}
+        className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+        style={{ perspective: "800px" }}
+        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
       >
         {portfolioData.projects.map((project, index) => (
-          <ProjectCard key={project.id} project={project} index={index} />
+          <motion.div
+            key={project.id}
+            className={index === 0 ? "sm:col-span-2" : ""}
+            variants={item}
+          >
+            <ProjectCard project={project} index={index} />
+          </motion.div>
         ))}
       </motion.div>
     </motion.section>

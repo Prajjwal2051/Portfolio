@@ -5,6 +5,7 @@ import { portfolioData } from "@/data/portfolio";
 import { TypewriterText } from "@/components/shared/TypewriterText";
 import { MagneticButton } from "@/components/shared/MagneticButton";
 import { GlitchText } from "@/components/shared/GlitchText";
+import { ParticleField } from "@/components/shared/ParticleField";
 
 const ROLES = [
   "full-stack developer",
@@ -82,6 +83,7 @@ export function Hero() {
         filter: exitFilter,
       }}
     >
+      <ParticleField />
       <div className="aurora-bg" aria-hidden="true" />
 
       <motion.div
