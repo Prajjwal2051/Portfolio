@@ -99,7 +99,7 @@ export function MobileHeader() {
                   </ul>
                 </nav>
               </div>
-              <div className="text-xs text-muted-foreground/60 pb-4">
+              <div className="text-xs text-muted-foreground pb-4">
                 <p>
                   © {new Date().getFullYear()}{" "}
                   {portfolioData.name.toLowerCase()}

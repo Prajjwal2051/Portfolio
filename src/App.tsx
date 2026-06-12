@@ -17,6 +17,7 @@ import { NoiseOverlay } from "@/components/shared/NoiseOverlay";
 import { SootSprites } from "@/components/shared/SootSprites";
 import { Fireflies } from "@/components/shared/Fireflies";
 import { CursorTrail } from "@/components/shared/CursorTrail";
+import { Agentation } from "agentation";
 
 function App() {
   const [showLoading] = useState(
@@ -28,27 +29,30 @@ function App() {
   }
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      <TooltipProvider>
-        {showLoading && <LoadingScreen />}
-        <NoiseOverlay />
-        <SootSprites />
-        <Fireflies />
-        <ScrollProgressBar />
-        <CursorTrail />
-        <CatCursor />
-        <Layout>
-          <Hero />
-          <Projects />
-          <Experience />
-          <Education />
-          <About />
-          <GitHub />
-          <Blog />
-          <Contact />
-        </Layout>
-      </TooltipProvider>
-    </ThemeProvider>
+    <>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+        <TooltipProvider>
+          {showLoading && <LoadingScreen />}
+          <NoiseOverlay />
+          <SootSprites />
+          <Fireflies />
+          <ScrollProgressBar />
+          <CursorTrail />
+          <CatCursor />
+          <Layout>
+            <Hero />
+            <Projects />
+            <Experience />
+            <Education />
+            <About />
+            <GitHub />
+            <Blog />
+            <Contact />
+          </Layout>
+        </TooltipProvider>
+      </ThemeProvider>
+      {import.meta.env.DEV && <Agentation />}
+    </>
   );
 }
 

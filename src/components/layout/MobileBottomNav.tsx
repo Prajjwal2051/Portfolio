@@ -51,7 +51,7 @@ export function MobileBottomNav() {
               key={id}
               onClick={() => scrollToSection(id)}
               aria-label={label}
-              aria-current={isActive ? "true" : undefined}
+              aria-current={isActive ? "page" : undefined}
               className="relative flex flex-col items-center gap-[3px] flex-1 py-1.5 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {isActive && (
