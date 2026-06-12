@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { VisitorCounter } from "@/components/shared/VisitorCounter";
 import { SpotifyWidget } from "@/components/shared/SpotifyWidget";
+import { useScramble } from "@/hooks/useScramble";
 import type { SectionId } from "@/types";
 
 const socials = [
@@ -50,15 +51,67 @@ const sectionIds: SectionId[] = [
   "contact",
 ];
 
+interface ScrambleNavLinkProps {
+  label: string;
+  sectionId: SectionId;
+  isActive: boolean;
+  scrollToSection: (id: SectionId) => void;
+}
+
+function ScrambleNavLink({
+  label,
+  sectionId,
+  isActive,
+  scrollToSection,
+}: ScrambleNavLinkProps) {
+  const { display, trigger } = useScramble(label);
+
+  return (
+    <a
+      href={`#${sectionId}`}
+      onMouseEnter={trigger}
+      onClick={(e) => {
+        e.preventDefault();
+        scrollToSection(sectionId);
+      }}
+      className={cn(
+        "flex items-center gap-2 py-1.5 text-sm font-bold transition-all duration-200 w-full text-left group no-underline",
+        isActive
+          ? "text-foreground"
+          : "text-muted-foreground hover:text-foreground",
+      )}
+      aria-current={isActive ? "page" : undefined}
+    >
+      <motion.span
+        animate={{ scale: isActive ? 1.3 : 1, opacity: isActive ? 1 : 0.5 }}
+        transition={{ duration: 0.2 }}
+        className="text-sm"
+      >
+        {isActive ? "•" : "◦"}
+      </motion.span>
+      <motion.span animate={{ x: isActive ? 2 : 0 }} transition={{ duration: 0.2 }}>
+        {display}
+      </motion.span>
+      <motion.span
+        animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -4 }}
+        whileHover={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.2 }}
+        className="text-xs"
+      >
+        →
+      </motion.span>
+    </a>
+  );
+}
+
 export function Sidebar() {
   const { activeSection, scrollToSection } = useActiveSection(sectionIds);
 
   return (
     <aside
       className="flex flex-col sticky top-0 w-[200px] xl:w-[220px] shrink-0 p-5 xl:p-6 z-40 overflow-y-auto"
-      style={{ height: "calc(100vh / 1.25)" }}
+      style={{ height: "100vh" }}
     >
-      {/* Only rendered on lg+, so calc(100vh / 1.25) is always correct here */}
       {/* Top: Identity */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -71,9 +124,9 @@ export function Sidebar() {
           className="block text-left"
           aria-label="Go to top"
         >
-          <h1 className="text-5xl xl:text-6xl font-bold tracking-tighter leading-none select-none">
+          <p className="text-5xl xl:text-6xl font-bold tracking-tighter leading-none select-none">
             {portfolioData.initials.split("").join(".")}
-          </h1>
+          </p>
         </button>
 
         {/* Name + Role */}
@@ -107,44 +160,12 @@ export function Sidebar() {
                   ease: "easeOut",
                 }}
               >
-                <a
-                  href={`#${sectionId}`}
-                  className={cn(
-                    "flex items-center gap-2 py-1.5 text-sm font-bold transition-all duration-200 w-full text-left group no-underline",
-                    isActive
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                  aria-current={isActive ? "true" : undefined}
-                >
-                  <motion.span
-                    animate={{
-                      scale: isActive ? 1.3 : 1,
-                      opacity: isActive ? 1 : 0.5,
-                    }}
-                    transition={{ duration: 0.2 }}
-                    className="text-sm"
-                  >
-                    {isActive ? "•" : "◦"}
-                  </motion.span>
-                  <motion.span
-                    animate={{ x: isActive ? 2 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {item.label}
-                  </motion.span>
-                  <motion.span
-                    animate={{
-                      opacity: isActive ? 1 : 0,
-                      x: isActive ? 0 : -4,
-                    }}
-                    whileHover={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="text-xs"
-                  >
-                    →
-                  </motion.span>
-                </a>
+                <ScrambleNavLink
+                  label={item.label}
+                  sectionId={sectionId}
+                  isActive={isActive}
+                  scrollToSection={scrollToSection}
+                />
               </motion.li>
             );
           })}
@@ -183,7 +204,7 @@ export function Sidebar() {
         <SpotifyWidget />
         <Separator className="opacity-30" />
         <VisitorCounter />
-        <div className="text-xs text-muted-foreground/60 space-y-0.5">
+        <div className="text-xs text-muted-foreground space-y-0.5">
           <p>
             © {new Date().getFullYear()} {portfolioData.name.toLowerCase()}
           </p>

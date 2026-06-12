@@ -1,29 +1,23 @@
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { portfolioData } from "@/data/portfolio";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Separator } from "@/components/ui/separator";
 
 export function About() {
+  const shouldReduce = useReducedMotion();
   const { likesAndDislikes } = portfolioData;
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useSpring(useTransform(scrollYProgress, [0, 0.3], [40, 0]), {
-    stiffness: 80,
-    damping: 20,
-  });
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   return (
     <motion.section
       id="about"
       className="py-8"
       aria-label="About"
-      ref={ref}
-      style={{ opacity, y }}
+      {...(!shouldReduce && {
+        initial:     { clipPath: "inset(0 0 100% 0)" },
+        whileInView: { clipPath: "inset(0 0 0% 0)" },
+        viewport:    { once: true, margin: "-60px" },
+        transition:  { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
+      })}
     >
       <Separator className="mb-8 opacity-30" />
       <SectionHeading>about</SectionHeading>
@@ -60,10 +54,6 @@ export function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.2 }}
           >
-            <p className="text-sm text-muted-foreground mb-4">
-              fuel my social anxiety — vote on whether you agree with my
-              opinions:
-            </p>
             <div className="grid grid-cols-2 gap-x-12 gap-y-1">
               <div>
                 <p className="text-xs text-muted-foreground mb-3 font-medium">
@@ -75,7 +65,6 @@ export function About() {
                     className="py-1.5 border-b border-border/30 last:border-0"
                   >
                     <p className="text-sm font-medium">{item}</p>
-                    <p className="text-xs text-muted-foreground/50">a / d</p>
                   </div>
                 ))}
               </div>
@@ -89,7 +78,6 @@ export function About() {
                     className="py-1.5 border-b border-border/30 last:border-0"
                   >
                     <p className="text-sm font-medium">{item}</p>
-                    <p className="text-xs text-muted-foreground/50">a / d</p>
                   </div>
                 ))}
               </div>

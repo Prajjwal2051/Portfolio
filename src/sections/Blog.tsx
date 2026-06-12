@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Separator } from "@/components/ui/separator";
 import { ExternalLink } from "lucide-react";
@@ -15,7 +14,7 @@ interface Post {
   coverImage?: { url: string };
 }
 
-const HASHNODE_HOST = "why-i-switched-to-fedora-and-hyprland.hashnode.dev";
+const HASHNODE_HOST = "prajjwalsahuu.hashnode.dev";
 
 async function fetchHashnodePosts(): Promise<Post[]> {
   const query = `
@@ -48,18 +47,9 @@ async function fetchHashnodePosts(): Promise<Post[]> {
 }
 
 export function Blog() {
+  const shouldReduce = useReducedMotion();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useSpring(useTransform(scrollYProgress, [0, 0.3], [40, 0]), {
-    stiffness: 80,
-    damping: 20,
-  });
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   useEffect(() => {
     fetchHashnodePosts()
@@ -75,8 +65,12 @@ export function Blog() {
       id="blog"
       className="py-8"
       aria-label="Blog"
-      ref={ref}
-      style={{ opacity, y }}
+      {...(!shouldReduce && {
+        initial:     { clipPath: "inset(0 0 100% 0)" },
+        whileInView: { clipPath: "inset(0 0 0% 0)" },
+        viewport:    { once: true, margin: "-60px" },
+        transition:  { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
+      })}
     >
       <motion.div
         initial={{ scaleX: 0, originX: 0 }}
@@ -133,7 +127,7 @@ export function Blog() {
                   </p>
                 )}
               </div>
-              <div className="flex items-center gap-2 shrink-0 text-[10px] text-muted-foreground/50">
+              <div className="flex items-center gap-2 shrink-0 text-xs text-muted-foreground/70">
                 {post.readTimeInMinutes && (
                   <span>{post.readTimeInMinutes} min</span>
                 )}
