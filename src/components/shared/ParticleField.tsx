@@ -41,7 +41,7 @@ export function ParticleField() {
       vx: (Math.random() - 0.5) * 0.3,
       vy: (Math.random() - 0.5) * 0.3,
       radius: Math.random() * 1.8 + 0.8,
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      color: COLORS[Math.floor(Math.random() * COLORS.length)]!,
       alpha: Math.random() * 0.4 + 0.1,
     }));
 
