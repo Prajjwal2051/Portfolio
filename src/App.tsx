@@ -16,6 +16,7 @@ import { LoadingScreen } from "@/components/shared/LoadingScreen";
 import { NoiseOverlay } from "@/components/shared/NoiseOverlay";
 import { SootSprites } from "@/components/shared/SootSprites";
 import { Fireflies } from "@/components/shared/Fireflies";
+import { CursorTrail } from "@/components/shared/CursorTrail";
 
 function App() {
   const [showLoading] = useState(
@@ -34,6 +35,7 @@ function App() {
         <SootSprites />
         <Fireflies />
         <ScrollProgressBar />
+        <CursorTrail />
         <CatCursor />
         <Layout>
           <Hero />

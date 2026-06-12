@@ -9,6 +9,7 @@ export interface Project {
   liveUrl?: string;
   tags: string[];
   icon?: string;
+  image?: string;
   highlights?: string[];
   lastUpdated?: string;
 }
