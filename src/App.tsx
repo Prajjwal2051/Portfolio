@@ -11,13 +11,14 @@ import { SootSprites } from "@/components/shared/SootSprites";
 import { Fireflies } from "@/components/shared/Fireflies";
 import { CursorTrail } from "@/components/shared/CursorTrail";
 import { Agentation } from "agentation";
+import { SeasonalAmbient } from "@/components/shared/SeasonalAmbient";
 
 const Projects = lazy(() => import("@/sections/Projects").then(m => ({ default: m.Projects })));
 const Experience = lazy(() => import("@/sections/Experience").then(m => ({ default: m.Experience })));
 const Education = lazy(() => import("@/sections/Education").then(m => ({ default: m.Education })));
 const About = lazy(() => import("@/sections/About").then(m => ({ default: m.About })));
 const GitHub = lazy(() => import("@/sections/GitHub").then(m => ({ default: m.GitHub })));
-const Blog = lazy(() => import("@/sections/Blog").then(m => ({ default: m.Blog })));
+const Skills = lazy(() => import("@/sections/Skills").then(m => ({ default: m.Skills })));
 const Contact = lazy(() => import("@/sections/Contact").then(m => ({ default: m.Contact })));
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <TooltipProvider>
           {showLoading && <LoadingScreen />}
           <NoiseOverlay />
+          <SeasonalAmbient />
           <SootSprites />
           <Fireflies />
           <ScrollProgressBar />
@@ -43,12 +45,12 @@ function App() {
           <Layout>
             <Hero />
             <Suspense fallback={null}>
-              <Projects />
               <Experience />
+              <Projects />
               <Education />
               <About />
               <GitHub />
-              <Blog />
+              <Skills />
               <Contact />
             </Suspense>
           </Layout>

@@ -43,11 +43,11 @@ const socials = [
 
 const sectionIds: SectionId[] = [
   "hero",
-  "projects",
   "experience",
+  "projects",
   "education",
   "about",
-  "blog",
+  "skills",
   "contact",
 ];
 

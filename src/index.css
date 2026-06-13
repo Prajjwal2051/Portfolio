@@ -96,19 +96,19 @@
     cursor: auto;
     /* Ghibli animated meadow gradient */
     background-image: radial-gradient(
-      ellipse 80% 60% at 50% -10%,
-      hsl(90 50% 92% / 0.55) 0%,
+      ellipse 90% 65% at 50% -10%,
+      hsl(90 50% 92% / 0.6) 0%,
       transparent 70%
     );
     background-attachment: fixed;
   }
 
   .dark body {
-    background-image: radial-gradient(
-      ellipse 80% 60% at 50% -10%,
-      hsl(150 40% 18% / 0.5) 0%,
-      transparent 70%
-    );
+    background-image:
+      radial-gradient(ellipse 55% 40% at 10% 35%, hsl(165 55% 20% / 0.32) 0%, transparent 55%),
+      radial-gradient(ellipse 45% 35% at 88% 22%, hsl(198 50% 20% / 0.26) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 50% -10%, hsl(150 40% 18% / 0.5) 0%, transparent 70%),
+      radial-gradient(ellipse 35% 45% at 55% 98%, hsl(258 28% 18% / 0.18) 0%, transparent 55%);
   }
 
   html {
@@ -263,4 +263,25 @@
 
 @media (prefers-reduced-motion: reduce) {
   .firefly { animation: none; opacity: 0; }
+}
+
+/* —— Cherry blossom petals (light mode) —— */
+@keyframes petal-fall {
+  0%   { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+  8%   { opacity: 0.72; }
+  88%  { opacity: 0.5; }
+  100% {
+    transform: translateY(105vh) translateX(var(--drift, 30px)) rotate(var(--spin, 180deg));
+    opacity: 0;
+  }
+}
+
+/* —— Rain streaks (dark mode) —— */
+@keyframes rain-fall {
+  from { transform: translateY(-20px) skewX(-8deg); }
+  to   { transform: translateY(105vh) skewX(-8deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*="petal-fall"], [style*="rain-fall"] { animation: none !important; opacity: 0 !important; }
 }

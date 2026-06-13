@@ -5,7 +5,7 @@ import {
   Briefcase,
   GraduationCap,
   User,
-  PenLine,
+  Zap,
   Mail,
 } from "lucide-react";
 import { useActiveSection } from "@/hooks/useActiveSection";
@@ -14,21 +14,21 @@ import type { SectionId } from "@/types";
 
 const navItems: { id: SectionId; label: string; Icon: React.ElementType }[] = [
   { id: "hero", label: "home", Icon: Home },
-  { id: "projects", label: "work", Icon: Code2 },
   { id: "experience", label: "exp", Icon: Briefcase },
+  { id: "projects", label: "work", Icon: Code2 },
   { id: "education", label: "edu", Icon: GraduationCap },
   { id: "about", label: "about", Icon: User },
-  { id: "blog", label: "blog", Icon: PenLine },
+  { id: "skills", label: "skills", Icon: Zap },
   { id: "contact", label: "contact", Icon: Mail },
 ];
 
 const sectionIds: SectionId[] = [
   "hero",
-  "projects",
   "experience",
+  "projects",
   "education",
   "about",
-  "blog",
+  "skills",
   "contact",
 ];
 

@@ -17,11 +17,11 @@ export const portfolioData: PortfolioData = {
   coverImage: "/banner.gif",
 
   navItems: [
-    { label: "projects", href: "#projects" },
     { label: "experience", href: "#experience" },
+    { label: "projects", href: "#projects" },
     { label: "education", href: "#education" },
     { label: "about", href: "#about" },
-    { label: "blog", href: "#blog" },
+    { label: "skills", href: "#skills" },
     { label: "contact", href: "#contact" },
   ],
 
