@@ -6,6 +6,7 @@ import { TagBadge } from "@/components/shared/TagBadge";
 interface ProjectCardProps {
   project: Project;
   index: number;
+  onSelect: () => void;
 }
 
 const TAG_GRADIENTS: Record<string, [string, string]> = {
@@ -30,7 +31,7 @@ const isFinePointer =
     ? window.matchMedia("(hover: hover) and (pointer: fine)").matches
     : false;
 
-export function ProjectCard({ project, index }: ProjectCardProps) {
+export function ProjectCard({ project, index, onSelect }: ProjectCardProps) {
   const featured = index === 0;
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
@@ -55,9 +56,10 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
   return (
     <motion.div
-      className="relative rounded-xl border border-border/40 bg-card/50 overflow-hidden h-full group/card"
+      className="relative rounded-xl border border-border/40 bg-card/50 overflow-hidden h-full group/card cursor-pointer"
       initial="rest"
       whileHover="hovering"
+      onClick={onSelect}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       style={{
@@ -96,18 +98,9 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       {/* Card body */}
       <div className="p-4">
         <div className="flex items-baseline gap-2 mb-1">
-          {href ? (
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-foreground hover:text-accent-pink transition-colors"
-            >
-              {project.name} <span className="text-muted-foreground">→</span>
-            </a>
-          ) : (
-            <span className="font-medium text-foreground">{project.name}</span>
-          )}
+          <span className="font-medium text-foreground group-hover/card:text-accent-pink transition-colors">
+            {project.name}
+          </span>
           <div className="flex items-center gap-1.5 ml-auto shrink-0">
             {project.lastUpdated && (
               <span className="flex items-center gap-1 text-xs text-muted-foreground/70">
@@ -120,6 +113,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
                 className="text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="View source on GitHub"
               >
@@ -131,6 +125,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
                 className="text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Visit live site"
               >
