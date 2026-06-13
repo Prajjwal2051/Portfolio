@@ -52,8 +52,6 @@ export function ProjectCard({ project, index, onSelect }: ProjectCardProps) {
     rotateY.set(0);
   }
 
-  const href = project.liveUrl ?? project.githubUrl ?? project.link;
-
   return (
     <motion.div
       className="relative rounded-xl border border-border/40 bg-card/50 overflow-hidden h-full group/card cursor-pointer"
