@@ -57,7 +57,7 @@ function NoteCard({
   index: number;
   shouldReduce: boolean | null;
 }) {
-  const rot = CARD_ROTATIONS[index % CARD_ROTATIONS.length];
+  const rot = CARD_ROTATIONS[index % CARD_ROTATIONS.length] ?? 0;
   const date = new Date(post.publishedAt).toLocaleDateString("en-US", {
     month: "short",
     year: "numeric",

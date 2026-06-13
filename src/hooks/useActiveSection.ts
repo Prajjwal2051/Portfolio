@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import type { SectionId } from "@/types";
+import { getLenis } from "@/lib/lenis";
 
 export function useActiveSection(sectionIds: SectionId[]) {
   const [activeSection, setActiveSection] = useState<SectionId>(
@@ -38,13 +39,12 @@ export function useActiveSection(sectionIds: SectionId[]) {
     ) as HTMLElement[];
     const element = all.find((el) => el.offsetParent !== null) ?? all[0];
     if (!element) return;
-    let top = 0;
-    let el: HTMLElement | null = element;
-    while (el) {
-      top += el.offsetTop;
-      el = el.offsetParent as HTMLElement | null;
+    const lenis = getLenis();
+    if (lenis) {
+      lenis.scrollTo(element, { offset: 0 });
+    } else {
+      element.scrollIntoView({ behavior: "smooth" });
     }
-    window.scrollTo({ top, behavior: "smooth" });
   }, []);
 
   return { activeSection, scrollToSection };
