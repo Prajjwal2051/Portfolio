@@ -50,15 +50,14 @@ export function Experience() {
             <motion.div
               key={exp.id}
               className="relative cursor-default"
-              initial={shouldReduce ? false : { opacity: 0, x: 12 }}
-              whileInView={shouldReduce ? {} : { opacity: 1, x: 0 }}
+              initial={shouldReduce ? false : { opacity: 0 }}
+              whileInView={shouldReduce ? {} : { opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.08, ease: "easeOut" }}
-              whileHover={{ x: 4, transition: { duration: 0.2 } }}
             >
               {/* Timeline dot */}
               <motion.div
-                className="absolute -left-[23px] top-[5px] w-3 h-3 rounded-full border-2 border-foreground/40 bg-background"
+                className="absolute -left-[21px] top-[5px] w-3 h-3 rounded-full border-2 border-foreground/40 bg-background"
                 initial={shouldReduce ? false : { scale: 0 }}
                 whileInView={shouldReduce ? {} : { scale: [0, 1.4, 1] }}
                 viewport={{ once: true }}
