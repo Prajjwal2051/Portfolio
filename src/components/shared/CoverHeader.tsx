@@ -12,6 +12,8 @@ export function CoverHeader() {
         alt="Cover"
         className="w-full h-48 object-cover rounded-xl select-none pointer-events-none"
         draggable={false}
+        loading="eager"
+        fetchPriority="high"
       />
     </div>
   );

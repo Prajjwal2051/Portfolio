@@ -1,4 +1,5 @@
 import { motion, useScroll, useSpring, useReducedMotion } from "framer-motion";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useRef } from "react";
 import { portfolioData } from "@/data/portfolio";
 import { SectionHeading } from "@/components/shared/SectionHeading";
@@ -6,7 +7,9 @@ import { TagBadge } from "@/components/shared/TagBadge";
 import { Separator } from "@/components/ui/separator";
 
 export function Experience() {
-  const shouldReduce = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const shouldReduce = prefersReducedMotion || !isDesktop;
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,

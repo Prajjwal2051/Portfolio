@@ -1,0 +1,76 @@
+interface HeadlampAvatarProps {
+  className?: string;
+}
+
+export function HeadlampAvatar({ className }: HeadlampAvatarProps) {
+  return (
+    <svg viewBox="0 0 100 100" className={className} aria-hidden="true">
+      <path
+        d="M18,38 Q15,14 26,8 Q31,17 36,9 Q41,17 46,9 Q50,16 54,9 Q59,17 64,9 Q69,17 74,8 Q85,14 82,38 L82,44 L18,44 Z"
+        fill="#f4cb52"
+        stroke="#000"
+        strokeWidth="4"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M18,38 Q15,20 24,10 Q19,24 21,40 Z"
+        fill="#f2a355"
+        stroke="#000"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+
+      <circle cx="19" cy="56" r="7" fill="#ffdfc7" stroke="#000" strokeWidth="3.5" />
+      <circle cx="81" cy="56" r="7" fill="#ffdfc7" stroke="#000" strokeWidth="3.5" />
+
+      <circle cx="50" cy="58" r="32" fill="#ffdfc7" stroke="#000" strokeWidth="4" />
+
+      <path
+        d="M12,38 Q12,50 16,54 L38,54 L38,36 Q25,32 12,38 Z"
+        fill="#1c8fc4"
+        stroke="#000"
+        strokeWidth="3.5"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M88,38 Q88,50 84,54 L62,54 L62,36 Q75,32 88,38 Z"
+        fill="#3fb6e8"
+        stroke="#000"
+        strokeWidth="3.5"
+        strokeLinejoin="round"
+      />
+
+      <rect x="34" y="30" width="32" height="26" rx="9" fill="#b9bcc4" stroke="#000" strokeWidth="4" />
+
+      <rect x="40" y="64" width="4" height="8" rx="2" fill="#000" />
+      <rect x="56" y="64" width="4" height="8" rx="2" fill="#000" />
+
+      <ellipse cx="34" cy="76" rx="5" ry="3.5" fill="#f9a8b8" />
+      <ellipse cx="66" cy="76" rx="5" ry="3.5" fill="#f9a8b8" />
+
+      <path d="M45,78 Q50,83 55,78" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" />
+
+      <path
+        d="M20,100 Q24,82 50,82 Q76,82 80,100 Z"
+        fill="#3a3f4b"
+        stroke="#000"
+        strokeWidth="4"
+      />
+      <rect x="46.5" y="84" width="7" height="16" fill="#f4f4f4" />
+      <path
+        d="M20,100 L33,87 L37,100 Z"
+        fill="#3fb6e8"
+        stroke="#000"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M80,100 L67,87 L63,100 Z"
+        fill="#3fb6e8"
+        stroke="#000"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

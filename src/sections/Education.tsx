@@ -1,10 +1,13 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { portfolioData } from "@/data/portfolio";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Separator } from "@/components/ui/separator";
 
 export function Education() {
-  const shouldReduce = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const shouldReduce = prefersReducedMotion || !isDesktop;
 
   return (
     <motion.section
@@ -23,9 +26,9 @@ export function Education() {
 
       <motion.div
         className="space-y-6"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true }}
+        {...(shouldReduce
+          ? { animate: "show" }
+          : { initial: "hidden", whileInView: "show", viewport: { once: true } })}
         variants={{
           hidden: {},
           show: { transition: { staggerChildren: 0.12 } },

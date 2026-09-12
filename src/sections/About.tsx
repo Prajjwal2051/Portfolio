@@ -1,10 +1,16 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { portfolioData } from "@/data/portfolio";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Separator } from "@/components/ui/separator";
 
 export function About() {
-  const shouldReduce = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  // whileInView never resolves on the mobile-rendered copy of this section
+  // (a confirmed IntersectionObserver quirk with the dual desktop/mobile DOM
+  // trees) so skip the scroll-triggered reveal there and show it immediately.
+  const shouldReduce = prefersReducedMotion || !isDesktop;
   const { likesAndDislikes } = portfolioData;
 
   return (
@@ -23,10 +29,12 @@ export function About() {
       <SectionHeading>about</SectionHeading>
 
       <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
+        {...(!shouldReduce && {
+          initial:     { opacity: 0, y: 15 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport:    { once: true },
+          transition:  { duration: 0.5 },
+        })}
         className="space-y-6"
       >
         <div className="text-sm leading-relaxed text-muted-foreground space-y-4">
@@ -49,10 +57,12 @@ export function About() {
 
         {likesAndDislikes && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.2 }}
+            {...(!shouldReduce && {
+              initial:     { opacity: 0, y: 10 },
+              whileInView: { opacity: 1, y: 0 },
+              viewport:    { once: true },
+              transition:  { duration: 0.4, delay: 0.2 },
+            })}
           >
             <div className="grid grid-cols-2 gap-x-12 gap-y-1">
               <div>
