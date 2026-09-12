@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useState, useCallback } from "react";
 import { Copy, Send } from "lucide-react";
 import { portfolioData } from "@/data/portfolio";
@@ -8,7 +9,9 @@ import { Toast } from "@/components/shared/Toast";
 import { MagneticButton } from "@/components/shared/MagneticButton";
 
 export function Contact() {
-  const shouldReduce = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const shouldReduce = prefersReducedMotion || !isDesktop;
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState(
     "email copied to clipboard!",
@@ -40,23 +43,27 @@ export function Contact() {
         <SectionHeading>contact</SectionHeading>
 
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          {...(!shouldReduce && {
+            initial:     { opacity: 0, y: 15 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport:    { once: true },
+            transition:  { duration: 0.5 },
+          })}
           className="space-y-2 mb-8"
         >
           {portfolioData.socials.map((social, index) => (
             <motion.div
               key={social.label}
-              initial={{ opacity: 0, x: -14 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.35,
-                delay: index * 0.07,
-                ease: "easeOut",
-              }}
+              {...(!shouldReduce && {
+                initial:     { opacity: 0, x: -14 },
+                whileInView: { opacity: 1, x: 0 },
+                viewport:    { once: true },
+                transition:  {
+                  duration: 0.35,
+                  delay: index * 0.07,
+                  ease: "easeOut",
+                },
+              })}
               whileHover={{ x: 6, transition: { duration: 0.2 } }}
               className="flex items-center gap-2"
             >
@@ -91,10 +98,12 @@ export function Contact() {
 
         {/* Direct email CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.15 }}
+          {...(!shouldReduce && {
+            initial:     { opacity: 0, y: 18 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport:    { once: true },
+            transition:  { duration: 0.5, delay: 0.15 },
+          })}
         >
           <MagneticButton
             onClick={() =>

@@ -45,12 +45,12 @@ function App() {
           <Layout>
             <Hero />
             <Suspense fallback={null}>
+              <Skills />
               <Experience />
               <Projects />
               <Education />
               <About />
               <GitHub />
-              <Skills />
               <Contact />
             </Suspense>
           </Layout>

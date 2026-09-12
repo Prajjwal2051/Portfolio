@@ -17,11 +17,11 @@ export const portfolioData: PortfolioData = {
   coverImage: "/banner.gif",
 
   navItems: [
+    { label: "skills", href: "#skills" },
     { label: "experience", href: "#experience" },
     { label: "projects", href: "#projects" },
     { label: "education", href: "#education" },
     { label: "about", href: "#about" },
-    { label: "skills", href: "#skills" },
     { label: "contact", href: "#contact" },
   ],
 
@@ -46,7 +46,6 @@ export const portfolioData: PortfolioData = {
         "nextauth v5",
         "github api",
       ],
-      icon: "🛰️",
       highlights: [
         "Built a multiplayer browser-based IDE using Next.js 16, TypeScript, and Monaco Editor with real-time collaborative coding via an Operational Transformation (OT) engine for 3 collaborators at 18ms latency",
         "Architected a Docker-isolated sandboxed code execution pipeline with 6 AI providers (OpenAI, Gemini, Claude) via Socket.io and integrated AI chat sidebar plus inline ghost-text completions",
@@ -72,7 +71,6 @@ export const portfolioData: PortfolioData = {
         "cloudinary",
         "jwt",
       ],
-      icon: "🎬",
       highlights: [
         "Architected and developed a full stack video streaming platform supporting video uploads, streaming, photo posts, playlists, watch history, and creator channels",
         "Designed and implemented 40+ RESTful APIs across 11 controllers to manage users, content, engagement, analytics, and subscriptions",
@@ -94,7 +92,6 @@ export const portfolioData: PortfolioData = {
       githubUrl: "https://github.com/Prajjwal2051/Chat-Connect",
       lastUpdated: "oct 2024",
       tags: ["python", "sockets", "multithreading", "networking", "cli"],
-      icon: "💬",
       highlights: [
         "Built a real-time multi-user chat server using Python's socket module with concurrent client handling via multithreading",
         "Implemented username validation and broadcast messaging to all connected clients from a single server instance",
@@ -112,7 +109,6 @@ export const portfolioData: PortfolioData = {
       githubUrl: "https://github.com/Prajjwal2051/Key-Logger",
       lastUpdated: "nov 2024",
       tags: ["python", "pynput", "smtp", "tkinter", "cybersecurity"],
-      icon: "⌨️",
       highlights: [
         "Built a real-time keystroke capture tool using pynput.keyboard.Listener with timestamp logging across Windows, macOS, and Linux",
         "Implemented automatic email reporting via SMTP with multi-provider support (Gmail, Outlook, Yahoo) using TLS encryption",
@@ -137,7 +133,6 @@ export const portfolioData: PortfolioData = {
         "ultrasonic sensor",
         "servo motor",
       ],
-      icon: "🗑️",
       highlights: [
         "Built an IoT-based smart dustbin using Arduino Uno, HC-SR04 ultrasonic sensor, and SG90 servo motor for hands-free lid control",
         "Programmed the Arduino to detect objects within a configurable range (2–30 cm) and trigger the servo to open the lid automatically",
@@ -150,11 +145,47 @@ export const portfolioData: PortfolioData = {
 
   experience: [
     {
+      id: "owasp-lead",
+      role: "technical lead",
+      company: "OWASP",
+      location: "Mysore, IN · on-site",
+      period: "august 2026 — present",
+      description:
+        "leading technical initiatives for the OWASP NIE student chapter, building on prior work as tech core.",
+      tags: ["next.js", "typescript", "leadership", "open-source"],
+    },
+    {
+      id: "incazing",
+      role: "full stack engineer",
+      company: "IncaZing™",
+      location: "Bengaluru, IN · hybrid",
+      period: "june 2026 — september 2026",
+      description:
+        "full stack engineer on IncaZing's product team, contributing to a behavioral assessment and upskilling platform for sales professionals, built on a modern TypeScript stack.",
+      highlights: [
+        "built UI features with Next.js (App Router), TypeScript, and Tailwind CSS following component-driven design patterns",
+        "developed API endpoints and server-side business logic powering assessment scoring, enrollment, and course-progress workflows",
+        "worked with PostgreSQL via a type-safe ORM, including schema design and migrations, on a managed Postgres + Auth backend",
+        "implemented input validation and secure request handling for user-facing and payment-adjacent workflows",
+        "contributed within a service-layer architecture, writing modular business logic shared across multiple API routes",
+      ],
+      tags: [
+        "rest apis",
+        "payment gateways",
+        "next.js",
+        "typescript",
+        "tailwind css",
+        "postgresql",
+        "orm",
+        "auth",
+      ],
+    },
+    {
       id: "owasp",
       role: "tech core",
       company: "OWASP",
-      location: "Mysore, IN",
-      period: "september 2025 — present",
+      location: "Mysore, IN · on-site",
+      period: "september 2025 — august 2026",
       link: "https://github.com/Prajjwal2051/CLIHandbookOWASP",
       description:
         "building tools and hosting events to teach students Git, open-source, and Linux fundamentals.",

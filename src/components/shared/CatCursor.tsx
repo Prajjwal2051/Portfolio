@@ -51,7 +51,7 @@ export function CatCursor() {
   return (
     <motion.div
       style={{ x: springX, y: springY }}
-      className="fixed top-0 left-0 pointer-events-none z-[9999] select-none"
+      className="hidden lg:block fixed top-0 left-0 pointer-events-none z-[9999] select-none"
     >
       <motion.div
         animate={{ scaleX: flip ? -1 : 1 }}
