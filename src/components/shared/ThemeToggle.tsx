@@ -21,12 +21,12 @@ const ACCENT_COLORS = ["#e8907a", "#c8a540", "#5aa0c8"];
 const SITE_URL   = typeof window !== "undefined" ? window.location.origin : "";
 const SHARE_TEXT = "Check out Prajjwal's portfolio!";
 
-function handleSharePlatform(platform: "github" | "x" | "facebook") {
+function handleSharePlatform(platform: "github" | "x" | "instagram") {
   const enc = encodeURIComponent;
   const urls = {
-    github:   "https://github.com/Prajjwal2051",
-    x:        `https://twitter.com/intent/tweet?url=${enc(SITE_URL)}&text=${enc(SHARE_TEXT)}`,
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${enc(SITE_URL)}`,
+    github:    "https://github.com/Prajjwal2051",
+    x:         `https://twitter.com/intent/tweet?url=${enc(SITE_URL)}&text=${enc(SHARE_TEXT)}`,
+    instagram: "https://www.instagram.com/prajjwalsahuu/",
   };
   window.open(urls[platform], "_blank", "noopener,noreferrer");
 }
@@ -161,7 +161,7 @@ export function ThemeToggle() {
       </motion.div>
 
       <motion.div
-        className="fixed bottom-4 left-4 z-50"
+        className="fixed bottom-20 left-4 z-50 lg:bottom-4"
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.9, duration: 0.4 }}

@@ -6,6 +6,7 @@ import { TypewriterText } from "@/components/shared/TypewriterText";
 import { MagneticButton } from "@/components/shared/MagneticButton";
 import { GlitchText } from "@/components/shared/GlitchText";
 import { ParticleField } from "@/components/shared/ParticleField";
+import { HeadlampAvatar } from "@/components/shared/HeadlampAvatar";
 
 const ROLES = [
   "full-stack developer",
@@ -90,7 +91,8 @@ export function Hero() {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       >
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-4 font-cursive">
+        <h1 className="flex items-center gap-3 text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-4 font-cursive">
+          <HeadlampAvatar className="h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 shrink-0" />
           <GlitchText text="hello!" />
         </h1>
       </motion.div>

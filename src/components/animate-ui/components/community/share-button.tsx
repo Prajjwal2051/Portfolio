@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { Share2, Github, X, Facebook } from 'lucide-react';
+import { Share2, Github, X, Instagram } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { HTMLMotionProps, motion, AnimatePresence } from 'motion/react';
 
@@ -37,7 +37,7 @@ const iconSizeMap = {
 type ShareButtonProps = HTMLMotionProps<'button'> & {
   children: React.ReactNode;
   className?: string;
-  onIconClick?: (platform: 'github' | 'x' | 'facebook') => void;
+  onIconClick?: (platform: 'github' | 'x' | 'instagram') => void;
 } & VariantProps<typeof buttonVariants>;
 
 function ShareButton({
@@ -117,7 +117,7 @@ const shareIconGroupVariants = cva('flex items-center justify-center gap-3', {
 type ShareIconGroupProps = HTMLMotionProps<'div'> & {
   className?: string;
   onIconClick?: (
-    platform: 'github' | 'x' | 'facebook',
+    platform: 'github' | 'x' | 'instagram',
     event: React.MouseEvent<HTMLDivElement>,
   ) => void;
 } & VariantProps<typeof shareIconGroupVariants>;
@@ -131,7 +131,7 @@ function ShareIconGroup({
 
   const handleIconClick = React.useCallback(
     (
-      platform: 'github' | 'x' | 'facebook',
+      platform: 'github' | 'x' | 'instagram',
       event: React.MouseEvent<HTMLDivElement>,
     ) => {
       onIconClick?.(platform, event);
@@ -178,9 +178,9 @@ function ShareIconGroup({
           transition: { duration: 0.2, ease: 'easeOut' },
         }}
         className="group-hover:opacity-100 cursor-pointer py-3 rounded-lg box-border"
-        onClick={(event) => handleIconClick('facebook', event)}
+        onClick={(event) => handleIconClick('instagram', event)}
       >
-        <Facebook size={iconSize} />
+        <Instagram size={iconSize} />
       </motion.div>
     </motion.div>
   );

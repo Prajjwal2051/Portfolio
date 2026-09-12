@@ -82,7 +82,7 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
   return (
     <div className="space-y-3 w-full">
       {/* Contributions calendar */}
-      <div className="w-full overflow-hidden">
+      <div className="w-full overflow-x-auto">
         <GitHubCalendar
           username={username}
           colorScheme={isDark ? "dark" : "light"}

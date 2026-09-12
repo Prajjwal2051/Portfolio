@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Separator } from "@/components/ui/separator";
 import { LogoLoop } from "@/components/shared/LogoLoop";
@@ -58,7 +59,9 @@ function SkillBadge({ name, category }: { name: string; category: string }) {
 }
 
 export function Skills() {
-  const shouldReduce = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const shouldReduce = prefersReducedMotion || !isDesktop;
   const { resolvedTheme } = useTheme();
 
   const fadeColor =
@@ -93,10 +96,12 @@ export function Skills() {
       <SectionHeading>skills</SectionHeading>
 
       <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
+        {...(!shouldReduce && {
+          initial:     { opacity: 0, y: 15 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport:    { once: true },
+          transition:  { duration: 0.5 },
+        })}
         className="space-y-3 overflow-hidden"
       >
         <div style={{ height: 44, position: "relative", overflow: "hidden" }}>

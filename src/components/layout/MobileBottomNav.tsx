@@ -14,21 +14,21 @@ import type { SectionId } from "@/types";
 
 const navItems: { id: SectionId; label: string; Icon: React.ElementType }[] = [
   { id: "hero", label: "home", Icon: Home },
+  { id: "skills", label: "skills", Icon: Zap },
   { id: "experience", label: "exp", Icon: Briefcase },
   { id: "projects", label: "work", Icon: Code2 },
   { id: "education", label: "edu", Icon: GraduationCap },
   { id: "about", label: "about", Icon: User },
-  { id: "skills", label: "skills", Icon: Zap },
   { id: "contact", label: "contact", Icon: Mail },
 ];
 
 const sectionIds: SectionId[] = [
   "hero",
+  "skills",
   "experience",
   "projects",
   "education",
   "about",
-  "skills",
   "contact",
 ];
 
