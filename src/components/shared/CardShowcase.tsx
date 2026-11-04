@@ -1,9 +1,10 @@
-// Interactive card showcase component based on Framer CardShowcase (https://framer.com/m/CardShowcase-3qxj.js@1dwe9Z9NXC9obVzYe7mU)
-// Cards expand based on vertical progress bar, auto-advance to next card
-// Desktop: horizontal layout with animations, Mobile: vertical stack without animations
-import { useState, useEffect, useRef, startTransition, CSSProperties } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Github, ExternalLink, ArrowUpRight } from "lucide-react";
+// CardShowcase — Framer component (https://framer.com/m/CardShowcase-3qxj.js@1dwe9Z9NXC9obVzYe7mU)
+// A row of columns. The active one expands while a thin progress mark fills, then the next takes over.
+// Type, color, and spacing follow the rest of the site. Desktop animates; smaller screens stack.
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
 
 export interface CardShowcaseItem {
@@ -40,10 +41,71 @@ export interface CardShowcaseProps {
   onSelectProject?: (project: Project) => void;
 }
 
+function openProject(card: CardShowcaseItem, onSelectProject?: (project: Project) => void) {
+  if (card.onSelect) card.onSelect();
+  else if (card.project && onSelectProject) onSelectProject(card.project);
+}
+
+function Meta({
+  card,
+  tagColor,
+  tagStyle,
+  onSelectProject,
+}: {
+  card: CardShowcaseItem;
+  tagColor?: string;
+  tagStyle: CSSProperties;
+  onSelectProject?: (project: Project) => void;
+}) {
+  return (
+    <div className="flex items-center gap-3 text-xs text-muted-foreground">
+      {card.tag && (
+        <span style={{ ...tagStyle, color: tagColor ?? "var(--accent-pink)" }} className="truncate">
+          {card.tag}
+        </span>
+      )}
+      <span className="ml-auto flex shrink-0 items-center gap-3">
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            openProject(card, onSelectProject);
+          }}
+          className="hover:text-foreground transition-colors"
+        >
+          details →
+        </button>
+        {card.githubUrl && (
+          <a
+            href={card.githubUrl}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(event) => event.stopPropagation()}
+            className="hover:text-foreground transition-colors"
+          >
+            github →
+          </a>
+        )}
+        {card.liveUrl && (
+          <a
+            href={card.liveUrl}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(event) => event.stopPropagation()}
+            className="hover:text-foreground transition-colors"
+          >
+            live →
+          </a>
+        )}
+      </span>
+    </div>
+  );
+}
+
 export function CardShowcase({
   cards,
   progressColor = "var(--accent-pink)",
-  animationSpeed = 5,
+  animationSpeed = 6,
   loop = true,
   textColor,
   numberColor,
@@ -52,388 +114,194 @@ export function CardShowcase({
   descriptionFont,
   numberFont,
   tagFont,
-  imageRadius = 12,
   padding = 0,
   contentImageGap = 16,
-  className = "",
+  className,
   onSelectProject,
 }: CardShowcaseProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const progressIntervalRef = useRef<number | null>(null);
+  const [paused, setPaused] = useState(false);
+  const barRef = useRef<HTMLDivElement>(null);
+  const elapsedRef = useRef(0);
+  const prefersReducedMotion = useReducedMotion();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const reduce = Boolean(prefersReducedMotion);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const checkMobile = () => {
-      startTransition(() => {
-        setIsMobile(window.innerWidth < 768);
-      });
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  useEffect(() => {
-    if (isMobile) return;
-    const interval = 16;
-    const increment = (100 / (animationSpeed * 1000)) * interval;
-    if (progressIntervalRef.current) {
-      clearInterval(progressIntervalRef.current);
-    }
-    progressIntervalRef.current = window.setInterval(() => {
-      setProgress((prev) => {
-        const newProgress = prev + increment;
-        if (newProgress >= 100) {
-          const nextIndex = activeIndex + 1;
-          if (nextIndex >= cards.length) {
-            if (loop) {
-              startTransition(() => {
-                setActiveIndex(0);
-              });
-              return 0;
-            } else {
-              if (progressIntervalRef.current) {
-                clearInterval(progressIntervalRef.current);
-              }
-              return 100;
-            }
-          } else {
-            startTransition(() => {
-              setActiveIndex(nextIndex);
-            });
-            return 0;
-          }
-        }
-        return newProgress;
-      });
-    }, interval);
-    return () => {
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-      }
-    };
-  }, [activeIndex, animationSpeed, cards.length, loop, isMobile]);
-
-  const handleCardClick = (index: number) => {
-    if (isMobile) return;
-    startTransition(() => {
-      setActiveIndex(index);
-      setProgress(0);
-    });
-  };
-
-  const defaultTitleFont: CSSProperties = {
-    fontSize: "1.375rem",
-    fontWeight: 700,
+  const titleStyle: CSSProperties = {
+    fontSize: "1.125rem",
+    fontWeight: 500,
     letterSpacing: "-0.02em",
-    lineHeight: "1.2",
+    lineHeight: 1.25,
+    color: textColor,
     ...titleFont,
   };
-
-  const defaultDescriptionFont: CSSProperties = {
+  const descriptionStyle: CSSProperties = {
     fontSize: "0.875rem",
-    fontWeight: 500,
+    fontWeight: 400,
     letterSpacing: "-0.01em",
-    lineHeight: "1.45",
+    lineHeight: 1.5,
+    color: textColor,
     ...descriptionFont,
   };
-
-  const defaultNumberFont: CSSProperties = {
-    fontSize: "2.25rem",
-    fontWeight: 800,
-    fontFamily: "var(--font-mono, monospace)",
+  const numberStyle: CSSProperties = {
+    fontSize: "1.75rem",
+    fontWeight: 600,
     letterSpacing: "-0.04em",
-    lineHeight: "1",
+    lineHeight: 1,
+    color: numberColor,
     ...numberFont,
   };
-
-  const defaultTagFont: CSSProperties = {
+  const tagStyle: CSSProperties = {
     fontSize: "0.75rem",
-    fontWeight: 600,
-    letterSpacing: "0.08em",
-    textTransform: "uppercase",
+    fontWeight: 500,
+    letterSpacing: "0.01em",
+    lineHeight: 1,
     ...tagFont,
   };
 
-  // Mobile layout: vertical stack without layout animations
-  if (isMobile) {
+  const select = (index: number) => {
+    elapsedRef.current = 0;
+    if (barRef.current) barRef.current.style.height = "0%";
+    setActiveIndex(index);
+  };
+
+  useEffect(() => {
+    if (!isDesktop || reduce || paused || cards.length <= 1) return;
+
+    let frame = 0;
+    const duration = animationSpeed * 1000;
+    const origin = performance.now() - elapsedRef.current;
+
+    const tick = (now: number) => {
+      const elapsed = now - origin;
+      elapsedRef.current = elapsed;
+      const amount = Math.min(1, elapsed / duration);
+      if (barRef.current) barRef.current.style.height = `${amount * 100}%`;
+      if (amount >= 1) {
+        elapsedRef.current = 0;
+        setActiveIndex((current) => {
+          const next = current + 1;
+          if (next >= cards.length) return loop ? 0 : current;
+          return next;
+        });
+        return;
+      }
+      frame = requestAnimationFrame(tick);
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [activeIndex, animationSpeed, cards.length, isDesktop, loop, paused, reduce]);
+
+  if (!isDesktop) {
     return (
-      <div
-        className={`w-full flex flex-col ${className}`}
-        style={{ padding: `${padding}px` }}
-      >
-        <div className="flex flex-col gap-6 w-full">
-          {cards.map((card, index) => {
-            const cardImage = card.image || {
-              src: "https://framerusercontent.com/images/GfGkADagM4KEibNcIiRUWlfrR0.jpg",
-              alt: card.title || "Project image",
-            };
-
-            return (
-              <div
-                key={index}
-                className="rounded-2xl border border-border/50 bg-card/40 p-5 shadow-sm flex flex-col"
-                style={{ gap: `${contentImageGap}px` }}
-              >
-                <div className="flex items-center justify-between">
-                  <div
-                    style={{
-                      ...defaultNumberFont,
-                      color: numberColor ?? "hsl(var(--muted-foreground) / 0.6)",
-                    }}
-                  >
-                    {card.number}
-                  </div>
-                  {card.tag && (
-                    <span
-                      className="px-2.5 py-1 rounded-full text-xs font-mono font-medium border border-border/60 bg-muted/40"
-                      style={{
-                        ...defaultTagFont,
-                        color: tagColor ?? "var(--accent-pink)",
-                      }}
-                    >
-                      {card.tag}
-                    </span>
-                  )}
-                </div>
-
-                <div
-                  style={{
-                    ...defaultTitleFont,
-                    color: textColor ?? "hsl(var(--foreground))",
-                  }}
-                >
-                  {card.title}
-                </div>
-
-                <div
-                  className="opacity-80 leading-relaxed"
-                  style={{
-                    ...defaultDescriptionFont,
-                    color: textColor ?? "hsl(var(--foreground))",
-                  }}
-                >
-                  {card.description}
-                </div>
-
-                <div
-                  className="w-full h-48 overflow-hidden rounded-xl border border-border/40 relative group"
-                  style={{ borderRadius: `${imageRadius}px` }}
-                >
-                  <img
-                    src={cardImage.src}
-                    alt={cardImage.alt}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between pt-2 border-t border-border/40">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (card.onSelect) card.onSelect();
-                      else if (card.project && onSelectProject) onSelectProject(card.project);
-                    }}
-                    className="text-xs font-medium underline underline-offset-4 opacity-80 hover:opacity-100 transition-opacity flex items-center gap-1"
-                  >
-                    view details <ArrowUpRight className="h-3.5 w-3.5" />
-                  </button>
-
-                  <div className="flex items-center gap-3">
-                    {card.githubUrl && (
-                      <a
-                        href={card.githubUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label="View source on GitHub"
-                        className="opacity-70 hover:opacity-100 transition-opacity p-1"
-                      >
-                        <Github className="h-4 w-4" />
-                      </a>
-                    )}
-                    {card.liveUrl && (
-                      <a
-                        href={card.liveUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label="Visit live site"
-                        className="opacity-70 hover:opacity-100 transition-opacity p-1"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+      <div className={cn("flex flex-col", className)} style={{ padding }}>
+        {cards.map((card, index) => (
+          <article
+            key={card.number + card.title}
+            className="border-t border-border/40 py-5 first:border-t-0 first:pt-0 last:pb-0"
+            style={{ display: "flex", flexDirection: "column", gap: contentImageGap }}
+          >
+            <div className="flex items-baseline justify-between gap-3">
+              <h3 style={titleStyle}>{card.title}</h3>
+              <span className="text-muted-foreground/60" style={numberStyle}>
+                {card.number}
+              </span>
+            </div>
+            <p className="text-muted-foreground" style={descriptionStyle}>
+              {card.description}
+            </p>
+            <Meta
+              card={card}
+              tagColor={tagColor}
+              tagStyle={tagStyle}
+              onSelectProject={onSelectProject}
+            />
+          </article>
+        ))}
       </div>
     );
   }
 
-  // Desktop layout: horizontal layout with progress-based expansion
   return (
     <div
-      className={`w-full overflow-hidden flex flex-col items-center justify-center ${className}`}
-      style={{ padding: `${padding}px` }}
+      className={cn("w-full", className)}
+      style={{ padding }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
     >
-      <div className="flex gap-4 w-full min-h-[490px] items-stretch">
+      <div className="flex w-full items-stretch gap-8">
         {cards.map((card, index) => {
           const isActive = index === activeIndex;
-          const cardImage = card.image || {
-            src: "https://framerusercontent.com/images/GfGkADagM4KEibNcIiRUWlfrR0.jpg",
-            alt: card.title || "Project image",
-          };
-
           return (
             <motion.div
-              key={index}
-              onClick={() => handleCardClick(index)}
-              className="rounded-2xl border border-border/50 bg-card/40 hover:bg-card/60 transition-colors shadow-sm relative overflow-hidden flex flex-col cursor-pointer select-none"
-              style={{
-                padding: "24px 20px 24px 24px",
-                gap: `${contentImageGap}px`,
-                minHeight: 0,
+              key={card.number + card.title}
+              role="button"
+              tabIndex={0}
+              onClick={() => select(index)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  select(index);
+                }
               }}
-              animate={{ flex: isActive ? 2.4 : 1 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+              aria-expanded={isActive}
+              className="relative flex min-w-0 cursor-pointer flex-col items-stretch text-left outline-none focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-foreground/40"
+              style={{ padding: "4px 0 4px 18px", gap: contentImageGap }}
+              animate={{ flex: isActive ? 2 : 1 }}
+              transition={{ duration: reduce ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
             >
-              {/* Vertical Progress Bar along left edge */}
-              <div className="absolute bottom-0 left-0 w-[3px] h-full bg-border/30">
-                {isActive && (
-                  <motion.div
-                    className="absolute bottom-0 left-0 w-full rounded-r"
-                    style={{ backgroundColor: progressColor }}
-                    animate={{ height: `${progress}%` }}
-                    transition={{ duration: 0 }}
+              <span className="absolute bottom-0 left-0 top-0 w-0.5 bg-border/50" aria-hidden="true">
+                {isActive && !reduce && (
+                  <span
+                    ref={barRef}
+                    className="absolute bottom-0 left-0 w-full"
+                    style={{ height: 0, backgroundColor: progressColor }}
                   />
                 )}
-              </div>
+                {isActive && reduce && (
+                  <span
+                    className="absolute bottom-0 left-0 h-full w-full"
+                    style={{ backgroundColor: progressColor }}
+                  />
+                )}
+              </span>
 
-              {/* Number and Title Header */}
-              <div className="flex flex-col items-flex-start gap-2 min-w-0">
-                <div
-                  style={{
-                    ...defaultNumberFont,
-                    color: numberColor ?? "hsl(var(--muted-foreground))",
-                    opacity: isActive ? 1 : 0.45,
-                  }}
-                  className="transition-opacity duration-300"
+              <span className="flex min-w-0 flex-col items-start gap-1.5">
+                <span
+                  className={cn("text-muted-foreground/55", isActive && "text-muted-foreground")}
+                  style={numberStyle}
                 >
                   {card.number}
-                </div>
-                <div
-                  style={{
-                    ...defaultTitleFont,
-                    color: textColor ?? "hsl(var(--foreground))",
-                    opacity: isActive ? 1 : 0.7,
-                  }}
-                  className="transition-opacity duration-300 truncate w-full"
+                </span>
+                <span
+                  className={cn("w-full", !isActive && "text-muted-foreground")}
+                  style={titleStyle}
                 >
                   {card.title}
-                </div>
-              </div>
+                </span>
+              </span>
 
-              {/* Collapsed view tag indicator */}
-              {!isActive && card.tag && (
-                <div
-                  className="mt-auto pt-4 text-xs font-mono font-medium truncate"
-                  style={{
-                    ...defaultTagFont,
-                    color: tagColor ?? "var(--accent-pink)",
-                    opacity: 0.7,
-                  }}
-                >
-                  {card.tag}
-                </div>
-              )}
-
-              {/* Expanded Card Content */}
-              <AnimatePresence>
+              <AnimatePresence initial={false}>
                 {isActive && (
                   <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.35, ease: "easeInOut" }}
-                    className="flex flex-col flex-1 justify-between min-h-0 w-full"
-                    style={{ gap: `${contentImageGap}px` }}
+                    key="body"
+                    className="flex min-h-0 flex-col"
+                    style={{ gap: contentImageGap }}
+                    initial={reduce ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25 }}
                   >
-                    <div
-                      className="opacity-80 line-clamp-3 leading-relaxed"
-                      style={{
-                        ...defaultDescriptionFont,
-                        color: textColor ?? "hsl(var(--foreground))",
-                      }}
-                    >
+                    <span className="text-muted-foreground" style={descriptionStyle}>
                       {card.description}
-                    </div>
-
-                    <div className="flex-1 flex items-center justify-center min-h-[180px] max-h-[220px] overflow-hidden rounded-xl border border-border/40 relative">
-                      <img
-                        src={cardImage.src}
-                        alt={cardImage.alt}
-                        style={{
-                          borderRadius: `${imageRadius}px`,
-                        }}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between flex-wrap gap-2 pt-2 border-t border-border/40">
-                      {card.tag ? (
-                        <div
-                          className="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium border border-border/60 bg-muted/40"
-                          style={{
-                            ...defaultTagFont,
-                            color: tagColor ?? "var(--accent-pink)",
-                          }}
-                        >
-                          {card.tag}
-                        </div>
-                      ) : <div />}
-
-                      <div className="flex items-center gap-3">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (card.onSelect) card.onSelect();
-                            else if (card.project && onSelectProject) onSelectProject(card.project);
-                          }}
-                          className="text-xs font-medium underline underline-offset-4 opacity-80 hover:opacity-100 transition-opacity flex items-center gap-1"
-                        >
-                          view details <ArrowUpRight className="h-3.5 w-3.5" />
-                        </button>
-                        {card.githubUrl && (
-                          <a
-                            href={card.githubUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label="View source on GitHub"
-                            onClick={(e) => e.stopPropagation()}
-                            className="opacity-70 hover:opacity-100 transition-opacity p-1"
-                          >
-                            <Github className="h-4 w-4" />
-                          </a>
-                        )}
-                        {card.liveUrl && (
-                          <a
-                            href={card.liveUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label="Visit live site"
-                            onClick={(e) => e.stopPropagation()}
-                            className="opacity-70 hover:opacity-100 transition-opacity p-1"
-                          >
-                            <ExternalLink className="h-4 w-4" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
+                    </span>
+                    <Meta
+                      card={card}
+                      tagColor={tagColor}
+                      tagStyle={tagStyle}
+                      onSelectProject={onSelectProject}
+                    />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -444,4 +312,5 @@ export function CardShowcase({
     </div>
   );
 }
+
 export default CardShowcase;
