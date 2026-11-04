@@ -14,7 +14,7 @@ export const portfolioData: PortfolioData = {
     { text: "scalable", color: "blue" },
   ],
   email: "prajjwal2051@gmail.com",
-  coverImage: "/banner.gif",
+  coverImage: "/banner.webp",
 
   navItems: [
     { label: "skills", href: "#skills" },

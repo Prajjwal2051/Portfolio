@@ -10,6 +10,8 @@ export function CoverHeader() {
       <img
         src={src}
         alt="Cover"
+        width={540}
+        height={304}
         className="w-full h-48 object-cover rounded-xl select-none pointer-events-none"
         draggable={false}
         loading="eager"

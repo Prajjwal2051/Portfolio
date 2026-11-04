@@ -3,7 +3,6 @@ import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/layout/Layout";
 import { Hero } from "@/sections/Hero";
-import { CatCursor } from "@/components/shared/CatCursor";
 import { ScrollProgressBar } from "@/components/shared/ScrollProgressBar";
 import { LoadingScreen } from "@/components/shared/LoadingScreen";
 import { NoiseOverlay } from "@/components/shared/NoiseOverlay";
@@ -41,7 +40,6 @@ function App() {
           <Fireflies />
           <ScrollProgressBar />
           <CursorTrail />
-          <CatCursor />
           <Layout>
             <Hero />
             <Suspense fallback={null}>
