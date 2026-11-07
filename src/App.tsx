@@ -69,8 +69,8 @@ function App() {
               <GitHub />
               <Experience />
               <Projects />
-              <Education />
               <About />
+              <Education />
               <Contact />
             </Suspense>
           </Layout>
