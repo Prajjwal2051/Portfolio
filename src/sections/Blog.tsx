@@ -36,14 +36,19 @@ async function fetchHashnodePosts(): Promise<Post[]> {
       }
     }
   `;
-  const res = await fetch("https://gql.hashnode.com", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query }),
-  });
-  const json = await res.json();
-  const edges: { node: Post }[] = json?.data?.publication?.posts?.edges ?? [];
-  return edges.map((e) => e.node);
+  try {
+    const res = await fetch("https://gql.hashnode.com", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query }),
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    const edges: { node: Post }[] = json?.data?.publication?.posts?.edges ?? [];
+    return edges.map((e) => e.node);
+  } catch {
+    return [];
+  }
 }
 
 const CARD_ROTATIONS = [-0.7, 0.5, -0.4, 0.8, -0.6, 0.4];

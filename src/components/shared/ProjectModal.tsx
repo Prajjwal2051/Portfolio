@@ -1,36 +1,18 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Github, ExternalLink, Clock } from "lucide-react";
+import { X, Github, ExternalLink } from "lucide-react";
 import type { Project } from "@/types";
-import { TagBadge } from "@/components/shared/TagBadge";
 import { getLenis } from "@/lib/lenis";
-
-const TAG_GRADIENTS: Record<string, [string, string]> = {
-  "next.js 16": ["#e8907a", "#c8a540"],
-  "next.js":    ["#e8907a", "#c8a540"],
-  react:        ["#5aa0c8", "#6ee7b7"],
-  python:       ["#c8a540", "#6ee7b7"],
-  arduino:      ["#6ee7b7", "#c8a540"],
-  "node.js":    ["#6ee7b7", "#5aa0c8"],
-};
-
-function getGradient(tags: string[]): string {
-  for (const tag of tags) {
-    const pair = TAG_GRADIENTS[tag.toLowerCase()];
-    if (pair) return `linear-gradient(135deg, ${pair[0]}44 0%, ${pair[1]}33 100%)`;
-  }
-  return `linear-gradient(135deg, #e8907a44 0%, #c8a54033 100%)`;
-}
 
 const listVariants = {
   hidden: {},
-  show:   { transition: { staggerChildren: 0.055 } },
+  show: { transition: { staggerChildren: 0.04 } },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, x: -10 },
-  show:   { opacity: 1, x: 0, transition: { duration: 0.3, ease: "easeOut" } },
+  hidden: { opacity: 0, x: -8 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.25, ease: "easeOut" } },
 };
 
 interface Props {
@@ -44,7 +26,9 @@ export function ProjectModal({ project, onClose }: Props) {
     const lenis = getLenis();
     lenis?.stop();
 
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
     window.addEventListener("keydown", onKey);
 
     return () => {
@@ -60,134 +44,130 @@ export function ProjectModal({ project, onClose }: Props) {
           {/* Backdrop */}
           <motion.div
             key="backdrop"
-            className="fixed inset-0 z-[9990] bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 z-[9990] bg-black/60 backdrop-blur-xs"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.2 }}
             onClick={onClose}
           />
 
-          {/* Card */}
+          {/* Minimalist Modal Card */}
           <motion.div
             key="modal"
-            className="fixed inset-0 z-[9991] flex items-center justify-center p-4 pointer-events-none"
-            initial={{ opacity: 0, scale: 0.93, y: 16 }}
+            className="fixed inset-0 z-[9991] flex items-center justify-center p-4 sm:p-6 pointer-events-none"
+            initial={{ opacity: 0, scale: 0.96, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.93, y: 16 }}
-            transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+            exit={{ opacity: 0, scale: 0.96, y: 10 }}
+            transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className="pointer-events-auto w-full max-w-lg max-h-[88vh] overflow-y-auto rounded-2xl border border-border/50 bg-card shadow-2xl"
+              className="pointer-events-auto w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl border border-border bg-card/95 backdrop-blur-md p-6 sm:p-7 shadow-2xl space-y-5"
               onClick={(e) => e.stopPropagation()}
               onWheelCapture={(e) => e.stopPropagation()}
             >
-              {/* Gradient header */}
-              <div
-                className="relative h-36 rounded-t-2xl flex items-center justify-center overflow-hidden"
-                style={{ background: getGradient(project.tags) }}
-              >
-                <span className="text-6xl select-none" aria-hidden>
-                  {project.icon ?? "🚀"}
-                </span>
+              {/* Header */}
+              <div className="flex items-start justify-between gap-4 pb-4 border-b border-border/50">
+                <div className="space-y-1.5 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h2 className="text-lg font-mono font-semibold text-foreground tracking-tight">
+                      {project.name}
+                    </h2>
+                    {project.lastUpdated && (
+                      <span className="text-[11px] font-mono text-muted-foreground/80 bg-muted/70 px-2 py-0.5 rounded">
+                        {project.lastUpdated}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    {project.description}
+                  </p>
+                </div>
 
-                {/* Close button */}
                 <button
+                  type="button"
                   onClick={onClose}
-                  className="absolute top-3 right-3 p-1.5 rounded-full bg-background/60 hover:bg-background/90 text-foreground/70 hover:text-foreground transition-colors backdrop-blur-sm"
+                  className="shrink-0 p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
                   aria-label="Close"
                 >
                   <X className="h-4 w-4" />
                 </button>
-
-                {project.lastUpdated && (
-                  <span className="absolute bottom-3 right-3 flex items-center gap-1 text-xs text-foreground/60 bg-background/50 backdrop-blur-sm px-2 py-0.5 rounded-full">
-                    <Clock className="h-2.5 w-2.5" />
-                    {project.lastUpdated}
-                  </span>
-                )}
               </div>
 
-              {/* Body */}
-              <div className="p-5 space-y-4">
-                {/* Name + links */}
-                <div className="flex items-start justify-between gap-3">
-                  <h2 className="text-lg font-bold leading-tight">
-                    {project.name}
-                  </h2>
-                  <div className="flex items-center gap-2 shrink-0 mt-0.5">
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground border border-border/50 hover:border-border px-2.5 py-1 rounded-full transition-colors"
-                        aria-label="View source"
+              {/* Action links */}
+              {(project.githubUrl || project.liveUrl) && (
+                <div className="flex items-center gap-2 flex-wrap">
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-xs"
+                      aria-label="Visit live site"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5" />
+                      live demo ↗
+                    </a>
+                  )}
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium border border-border bg-background/50 hover:bg-accent hover:text-accent-foreground transition-colors"
+                      aria-label="View source code"
+                    >
+                      <Github className="h-3.5 w-3.5" />
+                      source code ↗
+                    </a>
+                  )}
+                </div>
+              )}
+
+              {/* Architecture & Highlights */}
+              {project.highlights && project.highlights.length > 0 && (
+                <div className="space-y-2.5">
+                  <p className="text-[11px] font-mono font-semibold uppercase tracking-wider text-muted-foreground">
+                    architecture & highlights
+                  </p>
+                  <motion.ul
+                    className="space-y-2 text-xs sm:text-sm text-muted-foreground leading-relaxed"
+                    variants={listVariants}
+                    initial="hidden"
+                    animate="show"
+                  >
+                    {project.highlights.map((h, i) => (
+                      <motion.li
+                        key={i}
+                        variants={itemVariants}
+                        className="flex items-start gap-2.5"
                       >
-                        <Github className="h-3 w-3" />
-                        source
-                      </a>
-                    )}
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-xs text-foreground bg-foreground/10 hover:bg-foreground/20 border border-border/50 px-2.5 py-1 rounded-full transition-colors"
-                        aria-label="Visit live site"
+                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-foreground/40 shrink-0" />
+                        <span>{h}</span>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </div>
+              )}
+
+              {/* Tech Stack */}
+              {project.tags.length > 0 && (
+                <div className="space-y-2 pt-3 border-t border-border/40">
+                  <p className="text-[11px] font-mono font-semibold uppercase tracking-wider text-muted-foreground">
+                    technologies
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[11px] font-mono text-muted-foreground bg-secondary/80 px-2.5 py-0.5 rounded-md"
                       >
-                        <ExternalLink className="h-3 w-3" />
-                        live
-                      </a>
-                    )}
+                        #{tag}
+                      </span>
+                    ))}
                   </div>
                 </div>
-
-                {/* Description */}
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {project.description}
-                </p>
-
-                {/* Highlights */}
-                {project.highlights && project.highlights.length > 0 && (
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                      highlights
-                    </p>
-                    <motion.ul
-                      className="space-y-2"
-                      variants={listVariants}
-                      initial="hidden"
-                      animate="show"
-                    >
-                      {project.highlights.map((h, i) => (
-                        <motion.li
-                          key={i}
-                          variants={itemVariants}
-                          className="flex gap-2.5 text-sm text-muted-foreground"
-                        >
-                          <span className="shrink-0 mt-1 h-1.5 w-1.5 rounded-full bg-accent-pink/70" />
-                          <span className="leading-relaxed">{h}</span>
-                        </motion.li>
-                      ))}
-                    </motion.ul>
-                  </div>
-                )}
-
-                {/* Tags */}
-                {project.tags.length > 0 && (
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                      stack
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.tags.map((tag) => (
-                        <TagBadge key={tag} tag={tag} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+              )}
             </div>
           </motion.div>
         </>
@@ -196,3 +176,5 @@ export function ProjectModal({ project, onClose }: Props) {
     document.body
   );
 }
+
+export default ProjectModal;

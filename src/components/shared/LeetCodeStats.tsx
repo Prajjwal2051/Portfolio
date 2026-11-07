@@ -1,5 +1,6 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { ExternalLink } from "lucide-react";
+import { useThemeToggle } from "@/hooks/useTheme";
 
 interface LeetCodeData {
   totalSolved: number;
@@ -21,13 +22,15 @@ function endpointsFor(username: string) {
   ];
 }
 
+const REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+
 function useLeetCodeStats(username: string) {
   const [data, setData] = useState<LeetCodeData | null>(null);
 
   useEffect(() => {
     let cancelled = false;
 
-    (async () => {
+    const fetchStats = async () => {
       for (const url of endpointsFor(username)) {
         try {
           const res = await fetch(url);
@@ -41,10 +44,16 @@ function useLeetCodeStats(username: string) {
           // try the next fallback endpoint
         }
       }
-    })();
+    };
+
+    fetchStats();
+
+    // Automatically refresh after every 5 minutes
+    const timer = setInterval(fetchStats, REFRESH_INTERVAL_MS);
 
     return () => {
       cancelled = true;
+      clearInterval(timer);
     };
   }, [username]);
 
@@ -54,17 +63,37 @@ function useLeetCodeStats(username: string) {
 const DAY_MS = 86_400_000;
 const WEEKS = 26;
 
-// Tailwind can only apply a `/NN` opacity modifier to colors defined via a
-// color function like hsl(var(--x)) — `accent.yellow` in the config is a
-// bare `var(--accent-yellow)`, so `bg-accent-yellow/30` etc. compile to no
-// CSS rule at all. Apply the opacity manually via inline style instead.
-function heatStyle(count: number): { className: string; style?: CSSProperties } {
-  if (count === 0) return { className: "bg-muted/40" };
-  const opacity = count <= 2 ? 0.3 : count <= 5 ? 0.6 : 1;
-  return { className: "", style: { backgroundColor: "var(--accent-yellow)", opacity } };
+// Dark green contribution palette matching GitHub
+function heatStyle(count: number, isDark: boolean): { className: string; style?: CSSProperties } {
+  if (count === 0) {
+    return {
+      className: "",
+      style: { backgroundColor: isDark ? "#161b22" : "#ebedf0" },
+    };
+  }
+
+  const color = isDark
+    ? count <= 2
+      ? "#0e4429"
+      : count <= 5
+      ? "#006d32"
+      : count <= 8
+      ? "#26a641"
+      : "#39d353"
+    : count <= 2
+    ? "#9be9a8"
+    : count <= 5
+    ? "#40c463"
+    : count <= 8
+    ? "#30a14e"
+    : "#216e39";
+
+  return { className: "", style: { backgroundColor: color } };
 }
 
 function SubmissionHeatmap({ calendar }: { calendar: Record<string, number> }) {
+  const { isDark } = useThemeToggle();
+
   // LeetCode's submissionCalendar keys are UTC-midnight timestamps, so the
   // buckets below must be computed in UTC too — using local midnight would
   // shift every lookup by the viewer's timezone offset and miss every entry.
@@ -92,7 +121,7 @@ function SubmissionHeatmap({ calendar }: { calendar: Record<string, number> }) {
       {weeks.map((week, wi) => (
         <div key={wi} className="flex flex-col gap-[3px]">
           {week.map((day, di) => {
-            const { className, style } = heatStyle(day.count);
+            const { className, style } = heatStyle(day.count, isDark);
             return (
               <div
                 key={di}

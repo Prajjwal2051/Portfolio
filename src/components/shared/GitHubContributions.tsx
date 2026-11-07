@@ -19,13 +19,14 @@ interface Repo {
   language: string | null;
 }
 
-function useLastCommit(username: string) {
+function useLastCommit(username: string, refreshKey = 0) {
   const [commit, setCommit] = useState<LastCommit | null>(null);
 
   useEffect(() => {
     fetch(`https://api.github.com/users/${username}/events?per_page=30`)
       .then((r) => r.json())
       .then((events: any[]) => {
+        if (!Array.isArray(events)) return;
         const push = events.find((e) => e.type === "PushEvent");
         if (push) {
           const latestCommit = push.payload.commits?.at(-1);
@@ -40,12 +41,12 @@ function useLastCommit(username: string) {
         }
       })
       .catch(() => null);
-  }, [username]);
+  }, [username, refreshKey]);
 
   return commit;
 }
 
-function useTopRepos(username: string, count = 6) {
+function useTopRepos(username: string, count = 6, refreshKey = 0) {
   const [repos, setRepos] = useState<Repo[]>([]);
 
   useEffect(() => {
@@ -65,7 +66,7 @@ function useTopRepos(username: string, count = 6) {
         setRepos(sorted.slice(0, count));
       })
       .catch(() => null);
-  }, [username, count]);
+  }, [username, count, refreshKey]);
 
   return repos;
 }
@@ -74,16 +75,29 @@ interface GitHubContributionsProps {
   username: string;
 }
 
+const REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+
 export function GitHubContributions({ username }: GitHubContributionsProps) {
   const { isDark } = useThemeToggle();
-  const lastCommit = useLastCommit(username);
-  const topRepos = useTopRepos(username);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  // Auto-refresh every 5 minutes
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRefreshKey((k) => k + 1);
+    }, REFRESH_INTERVAL_MS);
+    return () => clearInterval(timer);
+  }, []);
+
+  const lastCommit = useLastCommit(username, refreshKey);
+  const topRepos = useTopRepos(username, 6, refreshKey);
 
   return (
     <div className="space-y-3 w-full">
       {/* Contributions calendar */}
       <div className="w-full overflow-x-auto">
         <GitHubCalendar
+          key={refreshKey}
           username={username}
           colorScheme={isDark ? "dark" : "light"}
           fontSize={11}
@@ -95,8 +109,8 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
           showTotalCount={true}
           showWeekdayLabels={true}
           theme={{
-            light: ["#ede9e2", "#d4a843", "#c9963a", "#b8832e", "#a06e22"],
-            dark: ["#2c2f33", "#4a3728", "#6b4f35", "#8c6642", "#d4a843"],
+            light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
+            dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
           }}
           style={{ width: "100%" }}
           labels={{
