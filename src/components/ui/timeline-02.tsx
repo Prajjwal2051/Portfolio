@@ -82,31 +82,31 @@ export default function Timeline({
               </div>
 
               {/* Content */}
-              <div className="space-y-3">
+              <div className="space-y-3 font-mono">
                 <div className="flex items-center gap-2.5">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent">
                     <Building2 className="h-5 w-5 text-muted-foreground" />
                   </div>
-                  <span className="font-medium text-base text-foreground">{company}</span>
+                  <span className="font-medium text-sm sm:text-base text-foreground font-mono">{company}</span>
                 </div>
                 <div>
-                  <h3 className="font-medium text-xl tracking-[-0.01em] text-foreground">
+                  <h3 className="font-semibold text-base sm:text-lg tracking-tight text-foreground font-mono">
                     {title}
                   </h3>
-                  <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
-                    <Calendar className="h-4 w-4 shrink-0" />
+                  <div className="mt-1.5 flex items-center gap-2 text-xs sm:text-sm text-muted-foreground font-mono flex-wrap">
+                    <Calendar className="h-3.5 w-3.5 shrink-0" />
                     <span>{period}</span>
                     {location && (
                       <span className="text-muted-foreground/70">· {location}</span>
                     )}
                   </div>
                 </div>
-                <p className="text-pretty text-muted-foreground text-sm sm:text-base leading-relaxed">
+                <p className="font-mono text-sm leading-relaxed text-muted-foreground">
                   {description}
                 </p>
 
                 {highlights && highlights.length > 0 && (
-                  <ul className="space-y-1.5 text-xs sm:text-sm text-muted-foreground/90 pl-1 pt-1">
+                  <ul className="space-y-1.5 text-xs sm:text-sm leading-relaxed text-muted-foreground/90 pl-1 pt-1 font-mono">
                     {highlights.map((h, i) => (
                       <li key={i} className="flex gap-2">
                         <span className="text-accent-pink shrink-0 mt-0.5">•</span>
