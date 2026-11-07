@@ -10,7 +10,7 @@ import { SootSprites } from "@/components/shared/SootSprites";
 import { Fireflies } from "@/components/shared/Fireflies";
 import { CursorTrail } from "@/components/shared/CursorTrail";
 import { SeasonalAmbient } from "@/components/shared/SeasonalAmbient";
-import { PixelSakura } from "@/components/shared/PixelSakura";
+import { FlyingCompanion } from "@/components/shared/FlyingCompanion";
 import { Analytics } from "@vercel/analytics/react";
 
 const Projects = lazy(() =>
@@ -37,8 +37,8 @@ const Contact = lazy(() =>
 
 const Agentation = import.meta.env.DEV
   ? lazy(() =>
-      import("agentation").then((m) => ({ default: m.Agentation }))
-    )
+    import("agentation").then((m) => ({ default: m.Agentation }))
+  )
   : null;
 
 function App() {
@@ -61,7 +61,7 @@ function App() {
           <Fireflies />
           <ScrollProgressBar />
           <CursorTrail />
-          <PixelSakura />
+          <FlyingCompanion />
           <Layout>
             <Hero />
             <Suspense fallback={null}>
