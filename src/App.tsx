@@ -10,6 +10,7 @@ import { SootSprites } from "@/components/shared/SootSprites";
 import { Fireflies } from "@/components/shared/Fireflies";
 import { CursorTrail } from "@/components/shared/CursorTrail";
 import { SeasonalAmbient } from "@/components/shared/SeasonalAmbient";
+import { PixelSakura } from "@/components/shared/PixelSakura";
 import { Analytics } from "@vercel/analytics/react";
 
 const Projects = lazy(() =>
@@ -60,6 +61,7 @@ function App() {
           <Fireflies />
           <ScrollProgressBar />
           <CursorTrail />
+          <PixelSakura />
           <Layout>
             <Hero />
             <Suspense fallback={null}>
