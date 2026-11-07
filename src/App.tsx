@@ -11,6 +11,7 @@ import { Fireflies } from "@/components/shared/Fireflies";
 import { CursorTrail } from "@/components/shared/CursorTrail";
 import { SeasonalAmbient } from "@/components/shared/SeasonalAmbient";
 import { FlyingCompanion } from "@/components/shared/FlyingCompanion";
+import { SpotifyNowPlaying } from "@/components/shared/SpotifyNowPlaying";
 import { Analytics } from "@vercel/analytics/react";
 
 const Projects = lazy(() =>
@@ -62,6 +63,9 @@ function App() {
           <ScrollProgressBar />
           <CursorTrail />
           <FlyingCompanion />
+          <div className="fixed bottom-5 left-5 z-40 hidden lg:block pointer-events-auto select-none">
+            <SpotifyNowPlaying />
+          </div>
           <Layout>
             <Hero />
             <Suspense fallback={null}>

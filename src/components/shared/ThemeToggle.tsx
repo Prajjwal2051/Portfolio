@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 import { Switch } from "@/components/animate-ui/components/radix/switch";
 import { ShareButton } from "@/components/animate-ui/components/community/share-button";
+import { EyeFollowButton } from "@/components/shared/EyeFollowButton";
 import { useThemeToggle } from "@/hooks/useTheme";
 
 gsap.registerPlugin(CustomEase);
@@ -217,11 +218,21 @@ export function ThemeToggle() {
 
       <motion.div
         ref={toggleRef}
-        className="fixed top-4 right-4 z-[10000]"
+        className="fixed top-4 right-4 z-[10000] flex items-center gap-2.5 sm:gap-3"
         initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.9, duration: 0.4 }}
       >
+        <EyeFollowButton />
+        <ShareButton
+          size="sm"
+          icon="prefix"
+          className="min-w-[85px] h-7 text-xs px-2.5 sm:px-3 rounded-full font-mono cursor-pointer"
+          whileHover={{ minWidth: "148px", transition: { duration: 0.2, ease: "easeOut" } }}
+          onIconClick={handleSharePlatform}
+        >
+          share
+        </ShareButton>
         <div ref={switchWrapRef}>
           <Switch
             checked={isDark}
@@ -232,23 +243,6 @@ export function ThemeToggle() {
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
           />
         </div>
-      </motion.div>
-
-      <motion.div
-        className="fixed bottom-20 left-4 z-50 lg:bottom-4"
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9, duration: 0.4 }}
-      >
-        <ShareButton
-          size="sm"
-          icon="prefix"
-          className="min-w-[90px] h-7 text-xs px-3 rounded-full font-mono"
-          whileHover={{ minWidth: "148px", transition: { duration: 0.2, ease: "easeOut" } }}
-          onIconClick={handleSharePlatform}
-        >
-          share
-        </ShareButton>
       </motion.div>
     </>
   );

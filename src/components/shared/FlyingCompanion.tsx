@@ -1,14 +1,14 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { SpotifyNowPlaying } from "./SpotifyNowPlaying";
 
 export function FlyingCompanion() {
   const prefersReduced = useReducedMotion();
 
   return (
-    <div className="fixed bottom-5 right-6 z-40 hidden lg:flex flex-col items-end gap-2.5 select-none pointer-events-none">
-      {/* Flying Companion hovering above */}
+    <div
+      className="fixed bottom-6 right-6 z-40 hidden lg:block select-none pointer-events-none"
+      aria-hidden="true"
+    >
       <motion.div
-        aria-hidden="true"
         initial={{ opacity: 0, scale: 0.85, y: 15 }}
         animate={{
           opacity: 1,
@@ -34,14 +34,9 @@ export function FlyingCompanion() {
           width={180}
           height={106}
           draggable={false}
-          className="w-36 xl:w-44 h-auto drop-shadow-md object-contain"
+          className="w-40 xl:w-48 h-auto drop-shadow-md object-contain"
         />
       </motion.div>
-
-      {/* Spotify Now Playing Widget directly below */}
-      <div className="pointer-events-auto">
-        <SpotifyNowPlaying />
-      </div>
     </div>
   );
 }

@@ -5,7 +5,6 @@ import { Sidebar } from "./Sidebar";
 import { MobileBottomNav } from "./MobileBottomNav";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { CoverHeader } from "@/components/shared/CoverHeader";
-import { EyeFollowButton } from "@/components/shared/EyeFollowButton";
 import { setLenis } from "@/lib/lenis";
 
 interface LayoutProps {
@@ -80,7 +79,6 @@ export function Layout({ children }: LayoutProps) {
 
       <MobileBottomNav />
       <ThemeToggle />
-      <EyeFollowButton />
     </div>
   );
 }

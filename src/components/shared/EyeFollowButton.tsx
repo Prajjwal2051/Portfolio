@@ -18,7 +18,7 @@ function Eye() {
   );
 }
 
-export function EyeFollowButton() {
+export function EyeFollowButton({ className = "" }: { className?: string }) {
   const handleClick = () => {
     getLenis()?.scrollTo(0, { duration: 1 });
   };
@@ -30,7 +30,7 @@ export function EyeFollowButton() {
       aria-label="Scroll to top"
       whileTap={{ scale: 0.9 }}
       whileHover={{ scale: 1.05 }}
-      className="hidden lg:flex fixed top-5 left-5 z-50 items-center gap-1.5"
+      className={`hidden lg:flex items-center gap-1.5 cursor-pointer ${className}`}
     >
       <Eye />
       <Eye />
