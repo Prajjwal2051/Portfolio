@@ -66,11 +66,11 @@ function App() {
             <Hero />
             <Suspense fallback={null}>
               <Skills />
+              <GitHub />
               <Experience />
               <Projects />
               <Education />
               <About />
-              <GitHub />
               <Contact />
             </Suspense>
           </Layout>
