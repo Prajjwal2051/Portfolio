@@ -19,42 +19,43 @@ export interface SpotifyNowPlayingProps {
   refreshIntervalSeconds?: number;
   showProgressBar?: boolean;
   idleText?: string;
-  backgroundColor?: string;
-  textColor?: string;
-  secondaryTextColor?: string;
-  accentColor?: string;
-  cornerRadius?: number;
-  padding?: number;
-  artworkSize?: number;
   linkToTrack?: boolean;
   defaultMinimized?: boolean;
   className?: string;
 }
 
-const DEFAULT_SPOTIFY_URL =
-  "https://open.spotify.com/?flow_ctx=4e73bc39-5590-48b4-8a7e-3eb9ab41cb0e%3A1773266976";
+// User-specified Spotify album: Alfaaz - Single by Hamza Malik
+const FALLBACK_TRACK: SpotifyTrack = {
+  title: "Alfaaz",
+  artist: "Hamza Malik",
+  artworkUrl: "/alfaaz.jpg",
+  trackUrl:
+    "https://open.spotify.com/album/41jcM2Nk286Rghi16VGTax?si=NHhzWUa4STqC_v-JIpz9Tg",
+  isPlaying: true,
+  durationMs: 214000, // 3m 34s
+  progressMs: 74000, // starts partway through for a lively feel
+};
+
+function formatTime(ms?: number): string {
+  if (!ms || isNaN(ms)) return "0:00";
+  const totalSec = Math.floor(ms / 1000);
+  const min = Math.floor(totalSec / 60);
+  const sec = totalSec % 60;
+  return `${min}:${sec < 10 ? "0" : ""}${sec}`;
+}
 
 export function SpotifyNowPlaying({
   apiEndpointUrl = (import.meta.env.VITE_SPOTIFY_API_URL as string) || "",
   refreshIntervalSeconds = 15,
   showProgressBar = true,
-  idleText = "Not playing",
-  backgroundColor = "#121212",
-  textColor = "#F5F5F5",
-  secondaryTextColor = "#A3A3A3",
-  accentColor = "#1DB954",
-  cornerRadius = 16,
-  padding = 12,
-  artworkSize = 52,
   linkToTrack = true,
   defaultMinimized = false,
   className = "",
 }: SpotifyNowPlayingProps) {
   const [isMinimized, setIsMinimized] = useState(defaultMinimized);
-  const [viewState, setViewState] = useState<"loading" | "playing" | "idle" | "error">("loading");
-  const [track, setTrack] = useState<SpotifyTrack | null>(null);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [liveProgressMs, setLiveProgressMs] = useState<number | undefined>(undefined);
+  const [viewState, setViewState] = useState<"loading" | "playing" | "idle" | "error">("playing");
+  const [track, setTrack] = useState<SpotifyTrack>(FALLBACK_TRACK);
+  const [liveProgressMs, setLiveProgressMs] = useState<number>(FALLBACK_TRACK.progressMs ?? 0);
 
   const hasEndpoint = Boolean(apiEndpointUrl);
 
@@ -85,28 +86,28 @@ export function SpotifyNowPlaying({
         data.artworkUrl ??
         data.albumImageUrl ??
         data.item?.album?.images?.[0]?.url ??
-        "";
+        "/alfaaz.jpg";
 
       const trackUrl =
         data.trackUrl ??
         data.songUrl ??
         data.item?.external_urls?.spotify ??
-        DEFAULT_SPOTIFY_URL;
+        FALLBACK_TRACK.trackUrl;
 
-      const isPlaying = Boolean(data.isPlaying ?? data.is_playing);
+      const isPlaying = Boolean(data.isPlaying ?? data.is_playing ?? true);
       const durationMs =
         typeof data.durationMs === "number"
           ? data.durationMs
           : typeof data.item?.duration_ms === "number"
           ? data.item.duration_ms
-          : undefined;
+          : FALLBACK_TRACK.durationMs;
 
       const progressMs =
         typeof data.progressMs === "number"
           ? data.progressMs
           : typeof data.progress_ms === "number"
           ? data.progress_ms
-          : undefined;
+          : 0;
 
       return {
         title,
@@ -118,195 +119,164 @@ export function SpotifyNowPlaying({
         progressMs,
       };
     } catch {
-      throw new Error("Unable to connect to Spotify.");
+      return null;
     }
   }, [apiEndpointUrl, hasEndpoint]);
 
   const refreshPlayback = useCallback(async () => {
     if (!hasEndpoint) {
-      setViewState("idle");
-      setTrack(null);
-      setErrorMessage("");
+      setTrack(FALLBACK_TRACK);
+      setViewState("playing");
       return;
     }
 
-    try {
-      const nextTrack = await fetchNowPlaying();
-      if (nextTrack) {
-        setTrack(nextTrack);
+    const nextTrack = await fetchNowPlaying();
+    if (nextTrack) {
+      setTrack(nextTrack);
+      if (typeof nextTrack.progressMs === "number") {
         setLiveProgressMs(nextTrack.progressMs);
-        setViewState(nextTrack.isPlaying ? "playing" : "idle");
-        setErrorMessage("");
-      } else {
-        setViewState("idle");
-        setTrack(null);
-        setLiveProgressMs(undefined);
-        setErrorMessage("");
       }
-    } catch (err: unknown) {
-      setViewState("error");
-      setErrorMessage(
-        err instanceof Error ? err.message : "Unable to load data."
-      );
+      setViewState(nextTrack.isPlaying ? "playing" : "idle");
+    } else {
+      // Fallback to the user's requested Alfaaz album if no live song
+      setTrack(FALLBACK_TRACK);
+      setViewState("playing");
     }
   }, [fetchNowPlaying, hasEndpoint]);
 
   // Initial fetch and interval poll
   useEffect(() => {
-    let timer: number | null = null;
     refreshPlayback();
+    if (!hasEndpoint) return;
 
     const intervalMs = Math.max(5, refreshIntervalSeconds) * 1000;
-    timer = window.setInterval(refreshPlayback, intervalMs);
+    const timer = window.setInterval(refreshPlayback, intervalMs);
+    return () => clearInterval(timer);
+  }, [refreshPlayback, refreshIntervalSeconds, hasEndpoint]);
 
-    return () => {
-      if (timer !== null) {
-        clearInterval(timer);
-      }
-    };
-  }, [refreshPlayback, refreshIntervalSeconds]);
-
-  // Interpolate progress smoothly every second when playing
+  // Advance progress smoothly every second when playing
   useEffect(() => {
-    if (viewState !== "playing" || !track?.durationMs) return;
+    if (viewState !== "playing" || !track.durationMs) return;
 
     const interval = window.setInterval(() => {
       setLiveProgressMs((prev) => {
-        if (typeof prev !== "number" || !track.durationMs) return prev;
         const next = prev + 1000;
-        return next > track.durationMs ? track.durationMs : next;
+        if (track.durationMs && next >= track.durationMs) {
+          return 0; // loop track playback
+        }
+        return next;
       });
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [viewState, track?.durationMs]);
+  }, [viewState, track.durationMs]);
 
   const progressRatio = useMemo(() => {
-    const cur = liveProgressMs ?? track?.progressMs;
-    const dur = track?.durationMs;
+    const cur = liveProgressMs;
+    const dur = track.durationMs;
     if (!cur || !dur || dur <= 0) return 0;
     return Math.max(0, Math.min(1, cur / dur));
-  }, [liveProgressMs, track?.progressMs, track?.durationMs]);
+  }, [liveProgressMs, track.durationMs]);
 
-  const showTrackLink = linkToTrack && Boolean(track?.trackUrl || DEFAULT_SPOTIFY_URL);
-  const targetUrl = track?.trackUrl || DEFAULT_SPOTIFY_URL;
+  const targetUrl = track.trackUrl || FALLBACK_TRACK.trackUrl;
 
   const handleCardClick = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest("button")) return;
-    if (showTrackLink) {
+    if (linkToTrack) {
       window.open(targetUrl, "_blank", "noopener,noreferrer");
     }
   };
 
-  const isPlaying = viewState === "playing" && Boolean(track?.isPlaying);
-  const currentArtwork = track?.artworkUrl || track?.albumImageUrl;
+  const isPlaying = viewState === "playing" && track.isPlaying;
+  const currentArtwork = track.artworkUrl || track.albumImageUrl || "/alfaaz.jpg";
 
   return (
     <motion.div
       layout
       initial={{ opacity: 0, y: 16, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       onClick={handleCardClick}
-      role={showTrackLink ? "link" : "status"}
-      tabIndex={showTrackLink ? 0 : undefined}
-      aria-label={
-        showTrackLink && track
-          ? `Open ${track.title} on Spotify`
-          : "Spotify Now Playing"
-      }
-      style={{
-        backgroundColor,
-        borderRadius: cornerRadius,
-        color: textColor,
-      }}
-      className={`relative group font-mono select-none overflow-hidden border border-white/10 shadow-2xl backdrop-blur-md transition-shadow hover:shadow-[0_8px_30px_rgb(0,0,0,0.4)] ${
-        showTrackLink ? "cursor-pointer" : "default"
+      role={linkToTrack ? "link" : "status"}
+      tabIndex={linkToTrack ? 0 : undefined}
+      aria-label={`Open ${track.title} by ${track.artist} on Spotify`}
+      className={`relative group font-mono select-none overflow-hidden rounded-2xl border-2 border-[#b0c4a4]/60 dark:border-[#2f4a38]/80 bg-gradient-to-br from-[#fcfbf7]/95 via-[#f8f5ec]/95 to-[#edf4e8]/95 dark:from-[#131f17]/95 dark:via-[#101a13]/95 dark:to-[#0d1510]/95 text-[#1e3024] dark:text-[#e2eee4] shadow-[0_8px_30px_rgba(40,65,35,0.14)] dark:shadow-[0_12px_36px_rgba(0,0,0,0.55)] backdrop-blur-md transition-all duration-300 hover:shadow-[0_12px_36px_rgba(40,65,35,0.22)] dark:hover:shadow-[0_12px_36px_rgba(0,0,0,0.7)] hover:border-[#8ea882] dark:hover:border-[#426b50] ${
+        linkToTrack ? "cursor-pointer" : "default"
       } ${className}`}
     >
+      {/* Decorative subtle corner vine glow */}
+      <div className="absolute -top-10 -right-10 w-24 h-24 bg-gradient-to-br from-emerald-500/15 via-[#c8a540]/10 to-transparent rounded-full blur-xl pointer-events-none" />
+
       <div
-        style={{
-          padding: isMinimized ? Math.max(6, padding * 0.6) : padding,
-        }}
-        className="flex items-center gap-3 transition-all duration-200"
+        className={`flex items-center gap-3 transition-all duration-200 ${
+          isMinimized ? "p-2.5" : "p-3"
+        }`}
       >
-        {/* Album Artwork or Spotify Icon */}
+        {/* Album Artwork Frame with Ghibli organic border */}
         <div
-          style={{
-            width: isMinimized ? 32 : artworkSize,
-            height: isMinimized ? 32 : artworkSize,
-            borderRadius: Math.max(6, cornerRadius * 0.35),
-          }}
-          className="relative shrink-0 overflow-hidden bg-neutral-900 border border-white/10 flex items-center justify-center transition-all duration-200"
+          className={`relative shrink-0 overflow-hidden rounded-xl border border-[#98b08d]/50 dark:border-[#385640]/70 shadow-sm transition-all duration-200 bg-neutral-900 ${
+            isMinimized ? "w-8 h-8" : "w-14 h-14"
+          }`}
         >
-          {currentArtwork ? (
-            <img
-              src={currentArtwork}
-              alt={track?.title ? `${track.title} artwork` : "Album artwork"}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-neutral-800 to-black">
-              <svg
-                className={isMinimized ? "h-4 w-4" : "h-6 w-6"}
-                style={{ color: accentColor }}
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.502 17.31c-.218.358-.684.471-1.042.253-2.857-1.745-6.453-2.14-10.688-1.172-.41.094-.82-.16-.913-.57-.094-.41.16-.82.57-.914 4.634-1.059 8.608-.616 11.82 1.36.358.219.47.684.253 1.043zm1.468-3.265c-.275.447-.862.592-1.309.317-3.27-2.01-8.254-2.592-12.122-1.417-.502.152-1.033-.134-1.186-.636-.152-.502.134-1.033.636-1.186 4.417-1.341 9.91-.692 13.664 1.613.447.275.592.862.317 1.309zm.126-3.41c-3.921-2.328-10.382-2.542-14.12-1.406-.601.182-1.242-.162-1.424-.763-.182-.601.162-1.242.763-1.424 4.298-1.305 11.434-1.054 15.945 1.623.54.321.716 1.02.395 1.56-.32.54-1.02.716-1.56.395z" />
-              </svg>
-            </div>
-          )}
+          <img
+            src={currentArtwork}
+            alt={`${track.title} album artwork`}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+            onError={(e) => {
+              // fallback if image fails
+              (e.currentTarget as HTMLImageElement).src =
+                "https://i.scdn.co/image/ab67616d0000b2736e9e64025043feb3999aa13b";
+            }}
+          />
 
           {isPlaying && !isMinimized && (
-            <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-[10px] text-white font-medium bg-black/60 px-1.5 py-0.5 rounded">
+            <div className="absolute inset-0 bg-emerald-950/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[1px]">
+              <span className="text-[9px] text-[#fbf9f2] font-semibold bg-emerald-800/80 px-1.5 py-0.5 rounded-full shadow-xs">
                 open ↗
               </span>
             </div>
           )}
         </div>
 
-        {/* Info Column */}
+        {/* Track Details & Ghibli Equalizer */}
         <div
           className={`min-w-0 flex-1 flex flex-col justify-center ${
-            isMinimized ? "pr-6 max-w-[150px]" : "pr-6 max-w-[190px]"
+            isMinimized ? "pr-6 max-w-[155px]" : "pr-6 max-w-[205px]"
           }`}
         >
-          {/* Header Row: Label + Equalizer */}
+          {/* Header Row: Ghibli Sprout + Equalizer */}
           {!isMinimized && (
-            <div className="flex items-center gap-2 mb-0.5">
-              <span
-                style={{ color: secondaryTextColor }}
-                className="text-[9px] uppercase tracking-wider font-semibold whitespace-nowrap"
-              >
-                {viewState === "playing"
-                  ? "Now playing"
-                  : viewState === "loading"
-                  ? "Connecting"
-                  : "Spotify"}
-              </span>
+            <div className="flex items-center justify-between gap-1.5 mb-1">
+              <div className="flex items-center gap-1">
+                {/* Ghibli leaf sprout icon */}
+                <svg
+                  className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M12 2C6.5 2 2 6.5 2 12c0 3.5 1.8 6.6 4.6 8.4-.1-.6-.2-1.3-.2-2 0-4.4 3.6-8 8-8 1.4 0 2.7.4 3.8 1C17.5 6.3 15 2 12 2zm6.9 7.6C18.3 9.2 17.2 9 16 9c-3.3 0-6 2.7-6 6 0 1.2.4 2.3 1 3.2 3.6-.5 6.6-2.9 7.9-6.6z" />
+                </svg>
+                <span className="text-[9px] uppercase tracking-wider font-semibold text-emerald-800/80 dark:text-emerald-300/80 whitespace-nowrap">
+                  ghibli radio
+                </span>
+              </div>
 
-              {/* Animated Equalizer Bars */}
+              {/* Animated Forest Equalizer */}
               {isPlaying && (
                 <div
-                  className="flex items-end gap-[2px] h-2.5"
+                  className="flex items-end gap-[2px] h-2.5 shrink-0"
                   aria-hidden="true"
                 >
-                  {[0, 1, 2].map((bar) => (
+                  {[0, 1, 2, 3].map((bar) => (
                     <motion.span
                       key={bar}
-                      style={{
-                        width: 2.5,
-                        backgroundColor: accentColor,
-                        borderRadius: 1,
-                      }}
+                      className="w-[2.5px] rounded-full bg-gradient-to-t from-emerald-600 to-[#c8a540] dark:from-emerald-400 dark:to-[#e0be5a]"
                       animate={{
-                        height: [3, 10, 5, 9, 3],
+                        height: [3, 10, 5, 11, 3],
                       }}
                       transition={{
-                        duration: 0.85 + bar * 0.15,
+                        duration: 0.8 + bar * 0.14,
                         repeat: Infinity,
                         ease: "easeInOut",
                       }}
@@ -317,44 +287,42 @@ export function SpotifyNowPlaying({
             </div>
           )}
 
-          {/* Title */}
+          {/* Song Title */}
           <div
-            className={`font-semibold text-neutral-100 truncate leading-snug group-hover:text-white ${
+            className={`font-semibold tracking-tight truncate leading-tight text-[#16271c] dark:text-[#f0f6f1] group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors ${
               isMinimized ? "text-xs" : "text-sm"
             }`}
           >
-            {viewState === "error"
-              ? "Spotify unavailable"
-              : track?.title || idleText}
+            {track.title}
           </div>
 
-          {/* Artist (when expanded) */}
+          {/* Artist */}
           {!isMinimized && (
-            <div
-              style={{ color: secondaryTextColor }}
-              className="text-[11px] truncate leading-tight mt-0.5"
-            >
-              {viewState === "error"
-                ? errorMessage
-                : track?.artist || "open on spotify"}
+            <div className="text-[11px] text-[#4b6752] dark:text-[#97b59f] truncate mt-0.5">
+              {track.artist}
             </div>
           )}
 
-          {/* Progress Bar */}
-          {!isMinimized && showProgressBar && (track?.durationMs || isPlaying) && (
-            <div
-              className="w-full h-1 rounded-full bg-white/10 overflow-hidden mt-1.5"
-              aria-hidden="true"
-            >
-              <motion.div
-                style={{
-                  width: `${progressRatio * 100}%`,
-                  backgroundColor: accentColor,
-                }}
-                className="h-full rounded-full"
-                animate={isPlaying ? { opacity: [0.85, 1, 0.85] } : { opacity: 0.7 }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              />
+          {/* Progress Bar & Timestamps */}
+          {!isMinimized && showProgressBar && (
+            <div className="mt-1.5 w-full">
+              <div
+                className="w-full h-1.5 rounded-full bg-[#dbe5d4]/70 dark:bg-[#1f3325] overflow-hidden"
+                aria-hidden="true"
+              >
+                <motion.div
+                  style={{ width: `${progressRatio * 100}%` }}
+                  className="h-full rounded-full bg-gradient-to-r from-emerald-600 via-[#72ad69] to-[#c8a540] dark:from-emerald-400 dark:via-[#6fa966] dark:to-[#e0be5a]"
+                />
+              </div>
+
+              <div className="flex justify-between items-center text-[9px] text-[#58735f] dark:text-[#88a58f] mt-1 font-mono">
+                <span>{formatTime(liveProgressMs)}</span>
+                <span className="flex items-center gap-1">
+                  <span>{formatTime(track.durationMs)}</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 text-[10px]">♪</span>
+                </span>
+              </div>
             </div>
           )}
         </div>
@@ -367,8 +335,8 @@ export function SpotifyNowPlaying({
             e.stopPropagation();
             setIsMinimized((prev) => !prev);
           }}
-          aria-label={isMinimized ? "Maximize player" : "Minimize player"}
-          className="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-neutral-300 hover:text-white flex items-center justify-center transition-all z-10"
+          aria-label={isMinimized ? "Maximize Ghibli player" : "Minimize Ghibli player"}
+          className="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-[#e3eedc] dark:bg-[#1e3024] hover:bg-[#d2e3ca] dark:hover:bg-[#2b4433] active:scale-95 text-[#3d5945] dark:text-[#a0c2a8] border border-[#a4bd98]/40 dark:border-[#385440]/60 flex items-center justify-center transition-all z-10"
         >
           <svg
             width="10"
