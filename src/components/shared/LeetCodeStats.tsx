@@ -63,12 +63,12 @@ function useLeetCodeStats(username: string) {
 const DAY_MS = 86_400_000;
 const WEEKS = 26;
 
-// Dark green contribution palette matching GitHub
+// Dark green contribution palette matching GitHub, with colorless empty cells
 function heatStyle(count: number, isDark: boolean): { className: string; style?: CSSProperties } {
   if (count === 0) {
     return {
       className: "",
-      style: { backgroundColor: isDark ? "#161b22" : "#ebedf0" },
+      style: { backgroundColor: isDark ? "rgba(255, 255, 255, 0.06)" : "rgba(0, 0, 0, 0.06)" },
     };
   }
 

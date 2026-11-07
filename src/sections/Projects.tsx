@@ -133,11 +133,8 @@ export function Projects() {
     >
       <div>
         <Separator className="mb-8 opacity-30" />
-        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-4">
+        <div className="mb-4">
           <SectionHeading>projects</SectionHeading>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground/70 font-mono">
-            <span>interactive 3d folder</span>
-          </div>
         </div>
       </div>
 
