@@ -39,19 +39,18 @@ export function About() {
       >
         <div className="text-sm leading-relaxed text-muted-foreground space-y-4">
           <p>
-            hey there! i'm prajjwal — a dynamic web developer based in{" "}
+            based in{" "}
             <span className="text-foreground font-medium">
               bengaluru, india
             </span>
-            . i have experience at OWASP, where i created an online CLI resource
-            for students and organized educational events to enhance Git and
-            open-source knowledge.
+            , i lead technical initiatives and build developer tools at OWASP NIE.
+            my work centers on full-stack systems, linux environments, and
+            open-source tooling designed to empower students and builders.
           </p>
           <p>
-            proficient in Linux command line and skilled in full-stack
-            development, i'm dedicated to fostering learning and innovation in
-            tech environments. when i'm not coding, you'll find me exploring new
-            technologies or contributing to open-source projects.
+            i focus on crafting responsive, accessible interfaces paired with resilient backends.
+            when i'm not writing code or architecting systems, you'll find me exploring emerging
+            web standards, mentoring peers, and contributing to community projects.
           </p>
         </div>
 

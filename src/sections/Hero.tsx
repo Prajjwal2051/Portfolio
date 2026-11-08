@@ -106,17 +106,17 @@ export function Hero() {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.65, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-        className="text-base sm:text-lg leading-relaxed max-w-lg font-bold"
+        className="text-base sm:text-lg leading-relaxed max-w-lg text-muted-foreground font-normal"
       >
         <p className="mb-2">
-          <span className="text-muted-foreground">*</span> my name is{" "}
-          <span className="font-semibold">
+          <span className="text-muted-foreground/60">*</span> my name is{" "}
+          <span className="font-semibold text-foreground">
             {portfolioData.name.toLowerCase()}
           </span>
           .
         </p>
         <p className="mb-2">
-          i'm a dynamic web developer who builds{" "}
+          i'm a developer who builds{" "}
           {portfolioData.bioHighlights.map((highlight, index) => (
             <span key={highlight.text}>
               <span
@@ -136,10 +136,10 @@ export function Hero() {
           applications.
         </p>
         <p>
-          dedicated to fostering learning and innovation in tech, from{" "}
+          dedicated to fostering learning and craft in tech, from{" "}
           <span className="font-semibold text-accent-pink">open-source</span>{" "}
           contributions to building full-stack platforms.{" "}
-          <span className="text-muted-foreground">*</span>
+          <span className="text-muted-foreground/60">*</span>
         </p>
       </motion.div>
 

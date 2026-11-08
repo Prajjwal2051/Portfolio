@@ -136,7 +136,7 @@ export const portfolioData: PortfolioData = {
       ],
       highlights: [
         "Built an IoT-based smart dustbin using Arduino Uno, HC-SR04 ultrasonic sensor, and SG90 servo motor for hands-free lid control",
-        "Programmed the Arduino to detect objects within a configurable range (2–30 cm) and trigger the servo to open the lid automatically",
+        "Programmed the Arduino to detect objects within a configurable range (2-30 cm) and trigger the servo to open the lid automatically",
         "Implemented auto-close after a preset delay, eliminating physical contact and improving hygiene",
         "Developed a TypeScript web dashboard (88.7% TypeScript) with a backend and styled frontend to monitor and control the dustbin remotely",
         "Designed customizable detection range and lid open duration via code parameters for flexible deployment",
@@ -150,7 +150,7 @@ export const portfolioData: PortfolioData = {
       role: "technical lead",
       company: "OWASP",
       location: "Mysore, IN · on-site",
-      period: "august 2026 — present",
+      period: "august 2026 - present",
       description:
         "leading technical initiatives for the OWASP NIE student chapter, building on prior work as tech core.",
       tags: ["next.js", "typescript", "leadership", "open-source"],
@@ -160,7 +160,7 @@ export const portfolioData: PortfolioData = {
       role: "full stack engineer",
       company: "IncaZing™",
       location: "Bengaluru, IN · hybrid",
-      period: "june 2026 — september 2026",
+      period: "june 2026 - september 2026",
       description:
         "full stack engineer on IncaZing's product team, contributing to a behavioral assessment and upskilling platform for sales professionals, built on a modern TypeScript stack.",
       highlights: [
@@ -186,12 +186,12 @@ export const portfolioData: PortfolioData = {
       role: "tech core",
       company: "OWASP",
       location: "Mysore, IN · on-site",
-      period: "september 2025 — august 2026",
+      period: "september 2025 - august 2026",
       link: "https://github.com/Prajjwal2051/CLIHandbookOWASP",
       description:
         "building tools and hosting events to teach students Git, open-source, and Linux fundamentals.",
       highlights: [
-        "Developed the Linux CLI Handbook — a full documentation website for learning Linux CLI built with Next.js 16, TypeScript, and shadcn/ui, deployed on Vercel",
+        "Developed the Linux CLI Handbook, a full documentation website for learning Linux CLI built with Next.js 16, TypeScript, and shadcn/ui, deployed on Vercel",
         "Implemented advanced search with relevance scoring, fuzzy matching, keyboard navigation (⌘K), and localStorage-based recent searches",
         "Structured 24+ documentation pages across 7 sections covering Introduction, Core Concepts, Commands, Advanced Topics, Reference, Troubleshooting, and FAQ",
         "Built auto-generated table of contents, reading progress indicator, and cyclic prev/next navigation for a smooth reading experience",
@@ -215,7 +215,7 @@ export const portfolioData: PortfolioData = {
     {
       id: "nie",
       institution: "The National Institute of Engineering, Mysore",
-      degree: "Bachelor of Engineering (BE) — Computer Science",
+      degree: "Bachelor of Engineering (BE) - Computer Science",
       location: "Mysore, India",
       period: "expected december 2028",
       highlights: [
@@ -228,7 +228,7 @@ export const portfolioData: PortfolioData = {
     {
       id: "dps",
       institution: "Delhi Public School (DPS), Korba",
-      degree: "High School Diploma — Science",
+      degree: "High School Diploma - Science",
       location: "Korba, Chhattisgarh",
       period: "december 2023",
       highlights: [

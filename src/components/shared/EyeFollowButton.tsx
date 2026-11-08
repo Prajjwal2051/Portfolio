@@ -1,6 +1,11 @@
 import { motion } from "framer-motion";
 import { getLenis } from "@/lib/lenis";
 import { useEyeTarget } from "@/hooks/useEyeTarget";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 
 function Eye() {
   const { ref, x, y } = useEyeTarget();
@@ -24,16 +29,23 @@ export function EyeFollowButton({ className = "" }: { className?: string }) {
   };
 
   return (
-    <motion.button
-      type="button"
-      onClick={handleClick}
-      aria-label="Scroll to top"
-      whileTap={{ scale: 0.9 }}
-      whileHover={{ scale: 1.05 }}
-      className={`hidden lg:flex items-center gap-1.5 cursor-pointer ${className}`}
-    >
-      <Eye />
-      <Eye />
-    </motion.button>
+    <Tooltip side="bottom" sideOffset={8}>
+      <TooltipTrigger asChild>
+        <motion.button
+          type="button"
+          onClick={handleClick}
+          aria-label="Scroll to top"
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.05 }}
+          className={`hidden lg:flex items-center gap-1.5 cursor-pointer ${className}`}
+        >
+          <Eye />
+          <Eye />
+        </motion.button>
+      </TooltipTrigger>
+      <TooltipContent className="z-[10001] text-xs font-mono">
+        scroll to top
+      </TooltipContent>
+    </Tooltip>
   );
 }

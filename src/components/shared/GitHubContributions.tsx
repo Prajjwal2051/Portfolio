@@ -142,7 +142,7 @@ export function GitHubContributions({ username }: GitHubContributionsProps) {
             → {lastCommit.sha}
           </span>
           <span className="truncate" title={lastCommit.message}>
-            {lastCommit.repo} — {lastCommit.message}
+            {lastCommit.repo}: {lastCommit.message}
           </span>
         </div>
       )}
