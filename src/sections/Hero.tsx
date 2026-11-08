@@ -154,16 +154,16 @@ export function Hero() {
         <TypewriterText words={ROLES} className="text-foreground font-medium" />
       </motion.div>
 
-      {/* Hire Me button */}
+      {/* Hire Me button & Resume CTA */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-        className="mt-7 flex items-center gap-3 flex-wrap"
+        className="mt-8 flex items-center gap-3.5 flex-wrap"
       >
         <MagneticButton
           onClick={handleHireMeClick}
-          className="group inline-flex items-center gap-2 border border-border/60 hover:border-foreground/40 px-4 py-2 rounded-full text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 hover:bg-muted/30"
+          className="group inline-flex items-center gap-2 bg-foreground text-background font-semibold hover:bg-foreground/90 shadow-sm hover:shadow-md px-5 py-2.5 rounded-full text-sm transition-all duration-200 cursor-pointer active:scale-95"
         >
           <span>hire me</span>
           <motion.span
@@ -177,7 +177,7 @@ export function Hero() {
 
         <MagneticButton
           onClick={handleResumeClick}
-          className="group inline-flex items-center gap-2 border border-border/60 hover:border-foreground/40 px-4 py-2 rounded-full text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 hover:bg-muted/30"
+          className="group inline-flex items-center gap-2 border border-border/80 hover:border-foreground/50 px-4 py-2.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 hover:bg-muted/40 cursor-pointer active:scale-95"
         >
           <span>download resume</span>
           <span className="text-base">📄</span>

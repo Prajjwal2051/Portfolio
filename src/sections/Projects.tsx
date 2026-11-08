@@ -187,7 +187,7 @@ export function Projects() {
               <button
                 type="button"
                 onClick={() => setSelectedProject(currentProject)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-xs cursor-pointer active:scale-95"
               >
                 <FolderOpen className="w-3.5 h-3.5" />
                 details
@@ -198,7 +198,7 @@ export function Projects() {
                   href={currentProject.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-border hover:bg-accent hover:text-accent-foreground transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-border/80 hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
                 >
                   <Github className="w-3.5 h-3.5" />
                   github
@@ -210,7 +210,7 @@ export function Projects() {
                   href={currentProject.liveUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-border hover:bg-accent hover:text-accent-foreground transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-border/80 hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                   live

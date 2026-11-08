@@ -43,11 +43,12 @@ const socials = [
 
 const sectionIds: SectionId[] = [
   "hero",
+  "about",
   "skills",
+  "github",
   "experience",
   "projects",
   "education",
-  "about",
   "contact",
 ];
 
@@ -75,28 +76,31 @@ function ScrambleNavLink({
         scrollToSection(sectionId);
       }}
       className={cn(
-        "flex items-center gap-2 py-1.5 text-sm font-bold transition-all duration-200 w-full text-left group no-underline",
+        "flex items-center gap-2 px-2.5 py-1.5 -mx-2.5 rounded-lg text-sm transition-all duration-200 w-full text-left group no-underline cursor-pointer",
         isActive
-          ? "text-foreground"
-          : "text-muted-foreground hover:text-foreground",
+          ? "font-semibold text-foreground bg-accent/40 border border-border/40 shadow-xs"
+          : "font-normal text-muted-foreground/75 hover:text-foreground hover:bg-muted/30",
       )}
       aria-current={isActive ? "page" : undefined}
     >
       <motion.span
-        animate={{ scale: isActive ? 1.3 : 1, opacity: isActive ? 1 : 0.5 }}
+        animate={{ scale: isActive ? 1.4 : 1, opacity: isActive ? 1 : 0.4 }}
         transition={{ duration: 0.2 }}
-        className="text-sm"
+        className={cn("text-xs font-mono", isActive ? "text-accent-pink" : "text-muted-foreground")}
       >
         {isActive ? "•" : "◦"}
       </motion.span>
-      <motion.span animate={{ x: isActive ? 2 : 0 }} transition={{ duration: 0.2 }}>
+      <motion.span
+        animate={{ x: isActive ? 2 : 0 }}
+        transition={{ duration: 0.2 }}
+        className="truncate"
+      >
         {display}
       </motion.span>
       <motion.span
         animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -4 }}
-        whileHover={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.2 }}
-        className="text-xs"
+        className="ml-auto text-xs text-muted-foreground/70"
       >
         →
       </motion.span>

@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import {
   Home,
-  Code2,
-  Briefcase,
-  GraduationCap,
   User,
   Zap,
+  Github,
+  Briefcase,
+  Code2,
+  GraduationCap,
   Mail,
 } from "lucide-react";
 import { useActiveSection } from "@/hooks/useActiveSection";
@@ -14,21 +15,23 @@ import type { SectionId } from "@/types";
 
 const navItems: { id: SectionId; label: string; Icon: React.ElementType }[] = [
   { id: "hero", label: "home", Icon: Home },
+  { id: "about", label: "about", Icon: User },
   { id: "skills", label: "skills", Icon: Zap },
+  { id: "github", label: "git", Icon: Github },
   { id: "experience", label: "exp", Icon: Briefcase },
   { id: "projects", label: "work", Icon: Code2 },
   { id: "education", label: "edu", Icon: GraduationCap },
-  { id: "about", label: "about", Icon: User },
   { id: "contact", label: "contact", Icon: Mail },
 ];
 
 const sectionIds: SectionId[] = [
   "hero",
+  "about",
   "skills",
+  "github",
   "experience",
   "projects",
   "education",
-  "about",
   "contact",
 ];
 

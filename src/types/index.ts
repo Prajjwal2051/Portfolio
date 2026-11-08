@@ -80,9 +80,10 @@ export interface BioHighlight {
 
 export type SectionId =
   | "hero"
-  | "projects"
-  | "experience"
-  | "education"
   | "about"
   | "skills"
+  | "github"
+  | "experience"
+  | "projects"
+  | "education"
   | "contact";

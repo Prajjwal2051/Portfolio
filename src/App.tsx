@@ -69,11 +69,11 @@ function App() {
           <Layout>
             <Hero />
             <Suspense fallback={null}>
+              <About />
               <Skills />
               <GitHub />
               <Experience />
               <Projects />
-              <About />
               <Education />
               <Contact />
             </Suspense>

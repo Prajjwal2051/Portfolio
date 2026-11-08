@@ -96,8 +96,9 @@ export function Contact() {
           ))}
         </motion.div>
 
-        {/* Direct email CTA */}
+        {/* Direct email CTA - Primary Action */}
         <motion.div
+          className="mt-6"
           {...(!shouldReduce && {
             initial:     { opacity: 0, y: 18 },
             whileInView: { opacity: 1, y: 0 },
@@ -113,9 +114,9 @@ export function Contact() {
                 "noopener,noreferrer",
               )
             }
-            className="inline-flex items-center gap-2 border border-border/60 hover:border-foreground/40 px-4 py-2 rounded-full text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 hover:bg-muted/30"
+            className="inline-flex items-center gap-2 bg-foreground text-background font-semibold hover:bg-foreground/90 shadow-sm hover:shadow-md px-5 py-2.5 rounded-full text-sm transition-all duration-200 cursor-pointer active:scale-95"
           >
-            <Send className="h-3 w-3" />
+            <Send className="h-3.5 w-3.5" />
             send me an email
           </MagneticButton>
         </motion.div>

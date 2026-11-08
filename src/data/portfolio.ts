@@ -17,11 +17,12 @@ export const portfolioData: PortfolioData = {
   coverImage: "/banner.webp",
 
   navItems: [
+    { label: "about", href: "#about" },
     { label: "skills", href: "#skills" },
+    { label: "github", href: "#github" },
     { label: "experience", href: "#experience" },
     { label: "projects", href: "#projects" },
     { label: "education", href: "#education" },
-    { label: "about", href: "#about" },
     { label: "contact", href: "#contact" },
   ],
 
